@@ -7,7 +7,6 @@ const ChannelsBox = () => {
   const dispatch = useDispatch();
   const { channels, active } = useSelector((state) => state.channels);
   useEffect(() => {
-    console.log('effect');
     const { token } = window.localStorage;
     axios
       .get('/api/v1/data', {

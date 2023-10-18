@@ -9,7 +9,11 @@ const messagesSlice = createSlice({
   reducers: {
     addMessages: (state, action) => {
       const messages = action.payload;
-      state.messages = [...messages, ...state.messages];
+      if (messages.length === 0) {
+        return;
+      }
+      state.messages =
+        messages.length > 1 ? [...messages, ...state.messages] : [messages, ...state.messages];
     },
   },
 });

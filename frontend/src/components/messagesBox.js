@@ -6,6 +6,8 @@ import { addMessages } from '../slices/messagesSlice.js';
 const MessagesBox = () => {
   const dispatch = useDispatch();
   const { messages } = useSelector((state) => state.messages);
+  const { active } = useSelector((state) => state.channels);
+
   useEffect(() => {
     const { token } = window.localStorage;
     axios
@@ -21,11 +23,13 @@ const MessagesBox = () => {
   }, [dispatch]);
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-      {messages.map((m, i) => (
-        <div key={i} className="text-break mb-2">
-          <b>Author</b>: {m}
-        </div>
-      ))}
+      {messages
+        .filter(({ channelId }) => channelId === active)
+        .map(({ body, id, username }) => (
+          <div key={id} className="text-break mb-2">
+            <b>{username}</b>: {body}
+          </div>
+        ))}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 const HeaderChat = () => {
   const { channels, active } = useSelector((state) => state.channels);
   const { messages } = useSelector((state) => state.messages);
-  console.log(channels, active);
+  console.log(channels, active, messages);
   // не читется свойство .name
   //   const currentChannelName = channels.find((i) => i.id === active).name;
   const countOfMessages = messages.length;
