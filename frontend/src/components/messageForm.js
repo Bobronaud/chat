@@ -1,32 +1,28 @@
-// import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { addMessages } from '../slices/messagesSlice.js';
-import { io } from 'socket.io-client';
-import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { socket } from '../socket.js';
 
 const MessageForm = () => {
-  const socket = io('http://localhost:3000');
   const [value, setValue] = useState('');
-  const dispatch = useDispatch();
+  const [isNetworkError, setNetworkError] = useState(false);
   const { active } = useSelector((state) => state.channels);
-
-  useEffect(() => {
-    socket.on('newMessage', (message) => {
-      dispatch(addMessages(message));
-    });
-  }, [dispatch, socket]);
   const handlerChange = (e) => {
     setValue(e.target.value);
   };
   const handlerSubmit = (e) => {
     e.preventDefault();
     const data = { body: value, channelId: active, username: 'admin' };
-    socket.emit('newMessage', data);
+    socket.emit('newMessage', data, (res) => {
+      setNetworkError(res.status !== 'ok');
+    });
     setValue('');
   };
   return (
     <div className="mt-auto px-5 py-3">
-      <form noValidate className="py-1 border rounded-2">
+      {isNetworkError ? (
+        <div class="alert alert-danger">Ошибка сети. Сообщение не доставлено</div>
+      ) : null}
+      <form onSubmit={handlerSubmit} noValidate className="py-1 border rounded-2">
         <div className="input-group has-validation">
           <input
             name="body"
@@ -36,12 +32,7 @@ const MessageForm = () => {
             onChange={handlerChange}
             value={value}
           />
-          <button
-            type="submit"
-            onSubmit={handlerSubmit}
-            className="btn btn-group-vertical"
-            disabled=""
-          >
+          <button type="submit" className="btn btn-group-vertical" disabled="">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"

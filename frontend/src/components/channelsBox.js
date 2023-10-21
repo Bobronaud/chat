@@ -1,25 +1,9 @@
-import axios from 'axios';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addChannels, setActive } from '../slices/channelsSlice.js';
 
 const ChannelsBox = () => {
   const dispatch = useDispatch();
   const { channels, active } = useSelector((state) => state.channels);
-  useEffect(() => {
-    const { token } = window.localStorage;
-    axios
-      .get('/api/v1/data', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        const { channels, currentChannelId } = response.data;
-        dispatch(addChannels(channels));
-        dispatch(setActive(currentChannelId));
-      });
-  }, [dispatch]);
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">

@@ -13,7 +13,7 @@ const messagesSlice = createSlice({
         return;
       }
       state.messages =
-        messages.length > 1 ? [...messages, ...state.messages] : [messages, ...state.messages];
+        messages.length > 1 ? [...state.messages, ...messages] : [...state.messages, messages];
     },
   },
 });
