@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addChannels, setActive } from '../slices/channelsSlice.js';
+import { setActive } from '../slices/channelsSlice.js';
 
 const ChannelsBox = () => {
   const dispatch = useDispatch();
