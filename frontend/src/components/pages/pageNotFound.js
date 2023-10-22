@@ -1,4 +1,4 @@
-const Page404 = () => {
+const PageNotFound = () => {
   return (
     <body className="h-100 bg-light">
       <div className="h-100">
@@ -18,4 +18,4 @@ const Page404 = () => {
   );
 };
 
-export default Page404;
+export default PageNotFound;

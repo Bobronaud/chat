@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { socket } from '../socket.js';
+import { socket } from '../../socket.js';
 
-const MessageForm = () => {
+const Form = () => {
   const [value, setValue] = useState('');
+  const [isDisabled, setDisabled] = useState(false);
   const [isNetworkError, setNetworkError] = useState(false);
   const { active } = useSelector((state) => state.channels);
   const handlerChange = (e) => {
@@ -11,11 +12,13 @@ const MessageForm = () => {
   };
   const handlerSubmit = (e) => {
     e.preventDefault();
+    setDisabled(true);
     const data = { body: value, channelId: active, username: 'admin' };
     socket.emit('newMessage', data, (res) => {
       setNetworkError(res.status !== 'ok');
     });
     setValue('');
+    setDisabled(false);
   };
   return (
     <div className="mt-auto px-5 py-3">
@@ -32,7 +35,7 @@ const MessageForm = () => {
             onChange={handlerChange}
             value={value}
           />
-          <button type="submit" className="btn btn-group-vertical" disabled="">
+          <button type="submit" className="btn btn-group-vertical" disabled={isDisabled}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -53,4 +56,4 @@ const MessageForm = () => {
   );
 };
 
-export default MessageForm;
+export default Form;

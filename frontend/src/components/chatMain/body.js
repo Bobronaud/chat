@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-const MessagesBox = () => {
+const Body = () => {
   const { messages } = useSelector((state) => state.messages);
   const { active } = useSelector((state) => state.channels);
   return (
@@ -16,4 +16,4 @@ const MessagesBox = () => {
   );
 };
 
-export default MessagesBox;
+export default Body;

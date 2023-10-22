@@ -1,17 +1,19 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useContext, useEffect } from 'react';
-import { AutorizationContext } from './App.js';
-import ChannelsBox from './channelsBox.js';
-import Chat from './chat.js';
-import { addMessages } from '../slices/messagesSlice.js';
-import { addChannels, setActive } from '../slices/channelsSlice.js';
+import { AutorizationContext } from '../App.js';
+import ChatAside from '../chatAside/chatAside.js';
+import ChatMain from '../chatMain/chatMain.js';
+import Modal from '../modals/modal.js';
+import { addMessages } from '../../slices/messagesSlice.js';
+import { addChannels, setActive } from '../../slices/channelsSlice.js';
 
-const ChatPage = () => {
+const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isAutorization = useContext(AutorizationContext);
+  const modal = useSelector((state) => state.ui.modal);
   if (!isAutorization) {
     navigate('/login');
   }
@@ -35,8 +37,9 @@ const ChatPage = () => {
       <div className="d-flex flex-column h-100">
         <div className="container h-100 my-4 overflow-hidden rounded shadow">
           <div className="row h-100 bg-white flex-md-row">
-            <ChannelsBox />
-            <Chat />
+            <ChatAside />
+            <ChatMain />
+            {modal ? <Modal type={modal} /> : null}
           </div>
         </div>
       </div>
@@ -45,4 +48,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default Chat;

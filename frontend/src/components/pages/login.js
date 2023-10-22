@@ -4,11 +4,12 @@ import { useState } from 'react';
 import axios from 'axios';
 import * as yup from 'yup';
 
-const LoginPage = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
-
+  const [isDisabled, setDisabled] = useState(false);
   const submitHandle = ({ username, password }) => {
+    setDisabled(true);
     axios
       .post('/api/v1/login', { username, password })
       .then((res) => {
@@ -20,6 +21,7 @@ const LoginPage = () => {
       })
       .catch((e) => {
         setErrorAutorizate(true);
+        setDisabled(false);
       });
   };
 
@@ -71,7 +73,11 @@ const LoginPage = () => {
                                 Такого пользователя не существует
                               </div>
                             ) : null}
-                            <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
+                            <button
+                              type="submit"
+                              className="w-100 mb-3 btn btn-outline-primary"
+                              disabled={isDisabled}
+                            >
                               Войти
                             </button>
                           </Form>
@@ -95,4 +101,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-const HeaderChat = () => {
+const Header = () => {
   const { channels, active } = useSelector((state) => state.channels);
   const { messages } = useSelector((state) => state.messages);
   const currentChannelName = channels.find((i) => i.id === active)
@@ -17,4 +17,4 @@ const HeaderChat = () => {
   );
 };
 
-export default HeaderChat;
+export default Header;
