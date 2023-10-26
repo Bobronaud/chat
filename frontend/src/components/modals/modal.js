@@ -2,16 +2,16 @@ import Add from './add.js';
 import Rename from './rename.js';
 import Remove from './remove.js';
 
-const Modal = ({ type }) => {
+const Modal = ({ type, channel }) => {
   switch (type) {
     case 'add': {
       return <Add />;
     }
     case 'rename': {
-      return <Rename />;
+      return <Rename channel={channel} />;
     }
     case 'remove': {
-      return <Remove />;
+      return <Remove channel={channel} />;
     }
     default:
       throw new Error(`type: '${type}' does not exist`);

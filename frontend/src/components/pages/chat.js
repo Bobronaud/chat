@@ -13,7 +13,7 @@ const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isAutorization = useContext(AutorizationContext);
-  const modal = useSelector((state) => state.ui.modal);
+  const { type, channel } = useSelector((state) => state.ui.modal);
   if (!isAutorization) {
     navigate('/login');
   }
@@ -39,7 +39,7 @@ const Chat = () => {
           <div className="row h-100 bg-white flex-md-row">
             <ChatAside />
             <ChatMain />
-            {modal ? <Modal type={modal} /> : null}
+            {type ? <Modal type={type} channel={channel} /> : null}
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ const Add = () => {
   const [value, setValue] = useState('');
   const [isValid, setIsValid] = useState(true);
   const closeModal = () => {
-    dispatch(setModal(null));
+    dispatch(setModal({ type: null }));
   };
   const handlerChange = (e) => {
     setValue(e.target.value);
@@ -33,7 +33,13 @@ const Add = () => {
   return (
     <>
       <div className="fade modal-backdrop show"></div>
-      <div role="dialog" aria-modal="true" className="fade modal show" tabIndex="-1" style={{ display: 'block' }}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="fade modal show"
+        tabIndex="-1"
+        style={{ display: 'block' }}
+      >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">

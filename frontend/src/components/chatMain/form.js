@@ -1,8 +1,12 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { socket } from '../../socket.js';
 
 const Form = () => {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  });
   const [value, setValue] = useState('');
   const [isDisabled, setDisabled] = useState(false);
   const [isNetworkError, setNetworkError] = useState(false);
@@ -34,6 +38,7 @@ const Form = () => {
             className="border-0 p-0 ps-2 form-control"
             onChange={handlerChange}
             value={value}
+            ref={inputRef}
           />
           <button type="submit" className="btn btn-group-vertical" disabled={isDisabled}>
             <svg

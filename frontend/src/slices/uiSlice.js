@@ -1,15 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  modal: null,
+  modal: {
+    type: null,
+    channel: null,
+  },
 };
 const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
     setModal: (state, action) => {
-      const value = action.payload;
-      state.modal = value;
+      const { type, channel } = action.payload;
+      state.modal.type = type;
+      state.modal.channel = channel;
     },
   },
 });

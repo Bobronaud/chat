@@ -6,7 +6,7 @@ const CreateChannel = () => {
 
   return (
     <button
-      onClick={() => dispatch(setModal('add'))}
+      onClick={() => dispatch(setModal({ type: 'add' }))}
       type="button"
       className="p-0 text-primary btn btn-group-vertical"
     >

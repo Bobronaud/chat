@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import CreateChannel from './createChannel.js';
 import Channel from './channel.js';
+import DefaultChannel from './defaultChannel.js';
 
 const ChatAside = () => {
   const { channels, active } = useSelector((state) => state.channels);
@@ -14,9 +15,13 @@ const ChatAside = () => {
         id="channel-box"
         className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
       >
-        {channels.map(({ name, id }) => (
-          <Channel key={id} name={name} id={id} active={active} />
-        ))}
+        {channels.map((channel) =>
+          channel.removable ? (
+            <Channel key={channel.id} info={channel} active={active} />
+          ) : (
+            <DefaultChannel key={channel.id} info={channel} active={active} />
+          ),
+        )}
       </ul>
     </div>
   );
