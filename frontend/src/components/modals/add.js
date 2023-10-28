@@ -14,6 +14,7 @@ const Add = () => {
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const [isValid, setIsValid] = useState(true);
+  const [isDisabled, setDisabled] = useState(false);
   const closeModal = () => {
     dispatch(setModal({ type: null }));
   };
@@ -22,6 +23,7 @@ const Add = () => {
   };
   const handlerSubmit = (e) => {
     e.preventDefault();
+    setDisabled(true);
     setIsValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
       socket.emit('newChannel', { name: value }, (res) => {
@@ -29,17 +31,12 @@ const Add = () => {
       });
       closeModal();
     }
+    setDisabled(false);
   };
   return (
     <>
       <div className="fade modal-backdrop show"></div>
-      <div
-        role="dialog"
-        aria-modal="true"
-        className="fade modal show"
-        tabIndex="-1"
-        style={{ display: 'block' }}
-      >
+      <div role="dialog" aria-modal="true" className="fade modal show" tabIndex="-1" style={{ display: 'block' }}>
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
@@ -71,7 +68,7 @@ const Add = () => {
                     <button type="button" onClick={closeModal} className="me-2 btn btn-secondary">
                       Отменить
                     </button>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary" disabled={isDisabled}>
                       Отправить
                     </button>
                   </div>

@@ -10,8 +10,7 @@ const channelsSlice = createSlice({
   reducers: {
     addChannels: (state, action) => {
       const channels = action.payload;
-      state.channels =
-        channels.length > 1 ? [...state.channels, ...channels] : [...state.channels, channels];
+      state.channels = channels.length > 1 ? [...state.channels, ...channels] : [...state.channels, channels];
     },
     renameChannel: (state, action) => {
       const channel = action.payload;

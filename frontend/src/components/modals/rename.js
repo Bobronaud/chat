@@ -13,6 +13,7 @@ const Rename = ({ channel }) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(channel.name);
   const [isValid, setIsValid] = useState(true);
+  const [isDisabled, setDisabled] = useState(false);
   const closeModal = () => {
     dispatch(setModal({ type: null }));
   };
@@ -21,22 +22,18 @@ const Rename = ({ channel }) => {
   };
   const handlerSubmit = (e) => {
     e.preventDefault();
+    setDisabled(true);
     setIsValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
       socket.emit('renameChannel', { id: channel.id, name: value });
       closeModal();
     }
+    setDisabled(false);
   };
   return (
     <>
       <div className="fade modal-backdrop show"></div>
-      <div
-        role="dialog"
-        aria-modal="true"
-        className="fade modal show"
-        tabIndex="-1"
-        style={{ display: 'block' }}
-      >
+      <div role="dialog" aria-modal="true" className="fade modal show" tabIndex="-1" style={{ display: 'block' }}>
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
@@ -68,7 +65,7 @@ const Rename = ({ channel }) => {
                     <button type="button" onClick={closeModal} className="me-2 btn btn-secondary">
                       Отменить
                     </button>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary" disabled={isDisabled}>
                       Отправить
                     </button>
                   </div>
