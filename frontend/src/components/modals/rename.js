@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
+import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
 import { setModal } from '../../slices/uiSlice.js';
 import { socket } from '../../socket.js';
 
@@ -31,51 +32,36 @@ const Rename = ({ channel }) => {
     setDisabled(false);
   };
   return (
-    <>
-      <div className="fade modal-backdrop show"></div>
-      <div role="dialog" aria-modal="true" className="fade modal show" tabIndex="-1" style={{ display: 'block' }}>
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="modal-title h4">Переименовать канал</div>
-              <button
-                type="button"
-                aria-label="Close"
-                data-bs-dismiss="modal"
-                className="btn btn-close"
-                onClick={closeModal}
-              ></button>
-            </div>
-            <div className="modal-body">
-              <form className="" onSubmit={handlerSubmit}>
-                <div>
-                  <input
-                    name="name"
-                    id="name"
-                    ref={inputRef}
-                    className={isValid ? 'mb-2 form-control' : 'mb-2 form-control is-invalid'}
-                    value={value}
-                    onChange={handlerChange}
-                  />
-                  <label className="visually-hidden" htmlFor="name">
-                    Имя канала
-                  </label>
-                  {isValid ? null : <div className="invalid-feedback">Должно быть уникальным</div>}
-                  <div className="d-flex justify-content-end">
-                    <button type="button" onClick={closeModal} className="me-2 btn btn-secondary">
-                      Отменить
-                    </button>
-                    <button type="submit" className="btn btn-primary" disabled={isDisabled}>
-                      Отправить
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
+    <Modal show={true} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>Переименовать канал</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handlerSubmit}>
+          <InputGroup hasValidation>
+            <Form.Control
+              required
+              isInvalid={!isValid}
+              className="mb-2"
+              ref={inputRef}
+              onChange={handlerChange}
+              value={value}
+              type="text"
+            />
+            <Form.Control.Feedback type="invalid">Должно быть уникальным</Form.Control.Feedback>
+          </InputGroup>
+
+          <div className="d-flex justify-content-end">
+            <Button className="me-2" variant="secondary" onClick={closeModal}>
+              Отменить
+            </Button>
+            <Button type="submit" disabled={isDisabled} variant="primary">
+              Отправить
+            </Button>
           </div>
-        </div>
-      </div>
-    </>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 
