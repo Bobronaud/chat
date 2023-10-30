@@ -1,8 +1,10 @@
 import { useSelector } from 'react-redux';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { socket } from '../../socket.js';
+import { AutorizationContext } from '../App.js';
 
 const Form = () => {
+  const { username } = useContext(AutorizationContext);
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
@@ -17,7 +19,7 @@ const Form = () => {
   const handlerSubmit = (e) => {
     e.preventDefault();
     setDisabled(true);
-    const data = { body: value, channelId: active, username: 'admin' };
+    const data = { body: value, channelId: active, username };
     socket.emit('newMessage', data, (res) => {
       setNetworkError(res.status !== 'ok');
     });

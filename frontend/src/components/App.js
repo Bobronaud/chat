@@ -2,14 +2,18 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/login.js';
+import Signup from './pages/signup.js';
 import ChatMain from './pages/chat.js';
 import PageNotFound from './pages/pageNotFound.js';
 import { socket } from '../socket.js';
 import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, renameChannel, removeChannel } from '../slices/channelsSlice.js';
 
-const isAutorization = () => window.localStorage.hasOwnProperty('token');
-const AutorizationContext = React.createContext(isAutorization());
+const autorization = {
+  isAutorization: window.localStorage.hasOwnProperty('token'),
+  username: null,
+};
+const AutorizationContext = React.createContext(autorization);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,10 +25,11 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
   return (
-    <AutorizationContext.Provider value={isAutorization}>
+    <AutorizationContext.Provider value={autorization}>
       <BrowserRouter>
         <Routes>
           <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
           <Route path="/" element={<ChatMain />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

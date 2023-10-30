@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useContext, useEffect } from 'react';
-import { AutorizationContext } from '../App.js';
+import { useEffect } from 'react';
+import NavbarHeader from '../navbarHeader.js';
 import ChatAside from '../chatAside/chatAside.js';
 import ChatMain from '../chatMain/chatMain.js';
 import Modal from '../modals/modal.js';
@@ -12,11 +12,9 @@ import { addChannels, setActive } from '../../slices/channelsSlice.js';
 const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAutorization = useContext(AutorizationContext);
   const { type, channel } = useSelector((state) => state.ui.modal);
-  if (!isAutorization) {
-    navigate('/login');
-  }
+  const { channels } = useSelector((state) => state.channels);
+  console.log(channels);
   useEffect(() => {
     const { token } = window.localStorage;
     axios
@@ -30,11 +28,17 @@ const Chat = () => {
         dispatch(addChannels(channels));
         dispatch(setActive(currentChannelId));
         dispatch(addMessages(messages));
+      })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          navigate('/login');
+        }
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
   return (
     <div className="h-100">
       <div className="d-flex flex-column h-100">
+        <NavbarHeader auth={true} />
         <div className="container h-100 my-4 overflow-hidden rounded shadow">
           <div className="row h-100 bg-white flex-md-row">
             <ChatAside />
