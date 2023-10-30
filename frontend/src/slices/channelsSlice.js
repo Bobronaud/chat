@@ -25,9 +25,13 @@ const channelsSlice = createSlice({
       const value = action.payload;
       state.active = value || state.channels.find((e) => e.name === 'general').id;
     },
+    clearChannels: (state, action) => {
+      state.channels = [];
+    },
   },
 });
 
-export const { addChannels, renameChannel, removeChannel, setActive } = channelsSlice.actions;
+export const { addChannels, renameChannel, removeChannel, setActive, clearChannels } =
+  channelsSlice.actions;
 
 export default channelsSlice.reducer;

@@ -13,7 +13,11 @@ const messagesSlice = createSlice({
       if (messages.length === 0) {
         return;
       }
-      state.messages = messages.length > 1 ? [...state.messages, ...messages] : [...state.messages, messages];
+      state.messages =
+        messages.length > 1 ? [...state.messages, ...messages] : [...state.messages, messages];
+    },
+    clearMessages: (state, action) => {
+      state.messages = [];
     },
   },
   extraReducers: (builder) => {
@@ -24,6 +28,6 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { addMessages } = messagesSlice.actions;
+export const { addMessages, clearMessages } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

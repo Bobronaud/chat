@@ -1,10 +1,16 @@
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { clearChannels } from '../slices/channelsSlice.js';
+import { clearMessages } from '../slices/messagesSlice.js';
 
 const NavbarHeader = ({ auth }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const logout = () => {
     window.localStorage.removeItem('token');
+    dispatch(clearChannels());
+    dispatch(clearMessages());
     navigate('/login');
   };
   return (
