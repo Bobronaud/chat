@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
 import { setModal } from '../../slices/uiSlice.js';
 import { socket } from '../../socket.js';
 
 const Rename = ({ channel }) => {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.select();
@@ -34,7 +36,7 @@ const Rename = ({ channel }) => {
   return (
     <Modal show={true} onHide={closeModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('chat.modals.headerRename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handlerSubmit}>
@@ -48,15 +50,17 @@ const Rename = ({ channel }) => {
               value={value}
               type="text"
             />
-            <Form.Control.Feedback type="invalid">Должно быть уникальным</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {t('chat.modals.invalidValue')}
+            </Form.Control.Feedback>
           </InputGroup>
 
           <div className="d-flex justify-content-end">
             <Button className="me-2" variant="secondary" onClick={closeModal}>
-              Отменить
+              {t('chat.modals.buttonClose')}
             </Button>
             <Button type="submit" disabled={isDisabled} variant="primary">
-              Отправить
+              {t('chat.modals.buttonSubmit')}
             </Button>
           </div>
         </Form>

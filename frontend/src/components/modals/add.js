@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
 import { socket } from '../../socket.js';
 
 const Add = () => {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
@@ -37,7 +39,7 @@ const Add = () => {
   return (
     <Modal show={true} onHide={closeModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('chat.modals.headerAdd')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handlerSubmit}>
@@ -51,15 +53,17 @@ const Add = () => {
               value={value}
               type="text"
             />
-            <Form.Control.Feedback type="invalid">Должно быть уникальным</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {t('chat.modals.invalidValue')}
+            </Form.Control.Feedback>
           </InputGroup>
 
           <div className="d-flex justify-content-end">
             <Button className="me-2" variant="secondary" onClick={closeModal}>
-              Отменить
+              {t('chat.modals.buttonClose')}
             </Button>
             <Button type="submit" variant="primary" disabled={isDisabled}>
-              Отправить
+              {t('chat.modals.buttonSubmit')}
             </Button>
           </div>
         </Form>

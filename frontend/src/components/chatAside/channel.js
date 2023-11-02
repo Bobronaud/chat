@@ -1,9 +1,11 @@
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { setActive } from '../../slices/channelsSlice.js';
 import { setModal } from '../../slices/uiSlice.js';
 
 const Channel = (props) => {
+  const { t } = useTranslation();
   const { id, name } = props.info;
   const { active } = props;
   const dispatch = useDispatch();
@@ -28,13 +30,13 @@ const Channel = (props) => {
             onClick={() => dispatch(setModal({ type: 'remove', channel: props.info }))}
             href="#"
           >
-            Удалить
+            {t('chat.channels.dropdown.remove')}
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => dispatch(setModal({ type: 'rename', channel: props.info }))}
             href="#"
           >
-            Переименовать
+            {t('chat.channels.dropdown.rename')}
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

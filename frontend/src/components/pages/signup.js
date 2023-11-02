@@ -2,28 +2,36 @@ import { Formik } from 'formik';
 import { Button, Form, InputGroup, Overlay } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
 import { AutorizationContext } from '../App.js';
 import NavbarHeader from '../navbarHeader.js';
 
 const Signup = () => {
+  const { t } = useTranslation();
   const targetOverlay = useRef(null);
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
   const auth = useContext(AutorizationContext);
+  yup.setLocale({
+    mixed: {
+      required: t('signup.errors.notEmpty'),
+      oneOf: t('signup.errors.passwordConfirmation'),
+    },
+  });
   const SignupSchema = yup.object().shape({
     username: yup
       .string()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов'),
-    password: yup.string().required('Обязательное поле').min(6, 'Не менее 6 символов'),
+      .required()
+      .min(3, t('signup.errors.usernameLength'))
+      .max(20, t('signup.errors.usernameLength')),
+    password: yup.string().required().min(6, t('signup.errors.passwordLength')),
     passwordConfirmation: yup
       .string()
-      .required('Обязательное поле')
-      .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+      .required()
+      .oneOf([yup.ref('password')]),
   });
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
@@ -61,11 +69,11 @@ const Signup = () => {
                     >
                       {({ handleSubmit, handleChange, values, errors }) => (
                         <Form onSubmit={handleSubmit} className="col-8 col-md-8 mt-3 mt-mb-0">
-                          <h1 className="text-center mb-4">Регистрация</h1>
+                          <h1 className="text-center mb-4">{t('signup.registration')}</h1>
                           <InputGroup className="mb-4" hasValidation>
                             <Form.Control
                               type="text"
-                              placeholder="Имя пользователя"
+                              placeholder={t('signup.username')}
                               name="username"
                               value={values.username}
                               onChange={handleChange}
@@ -80,7 +88,7 @@ const Signup = () => {
                           <InputGroup className="mb-4" hasValidation>
                             <Form.Control
                               type="password"
-                              placeholder="Пароль"
+                              placeholder={t('signup.password')}
                               name="password"
                               value={values.password}
                               onChange={handleChange}
@@ -93,7 +101,7 @@ const Signup = () => {
                           <InputGroup className="mb-4" hasValidation>
                             <Form.Control
                               type="password"
-                              placeholder="Подтвердите пароль"
+                              placeholder={t('signup.passwordConfirmation')}
                               name="passwordConfirmation"
                               value={values.passwordConfirmation}
                               onChange={handleChange}
@@ -110,7 +118,7 @@ const Signup = () => {
                             disabled={isDisabled}
                             ref={targetOverlay}
                           >
-                            Зарегистрироваться
+                            {t('signup.register')}
                           </Button>
                           <Overlay
                             target={targetOverlay.current}
@@ -137,7 +145,7 @@ const Signup = () => {
                                   ...props.style,
                                 }}
                               >
-                                Такой пользователь уже существует
+                                {t('signup.errors.userAlreadyExist')}
                               </div>
                             )}
                           </Overlay>

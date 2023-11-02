@@ -13,8 +13,6 @@ const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { type, channel } = useSelector((state) => state.ui.modal);
-  const { channels } = useSelector((state) => state.channels);
-  console.log(channels);
   useEffect(() => {
     const { token } = window.localStorage;
     axios

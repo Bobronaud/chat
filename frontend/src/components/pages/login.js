@@ -1,12 +1,14 @@
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
 import { AutorizationContext } from '../App.js';
 import NavbarHeader from '../navbarHeader.js';
 
 const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
@@ -51,14 +53,14 @@ const Login = () => {
                     >
                       {({ errors }) => (
                         <Form className="col-8 col-md-8 mt-3 mt-mb-0">
-                          <h1 className="text-center mb-4">Войти</h1>
+                          <h1 className="text-center mb-4">{t('login.login')}</h1>
                           <div className="form-group">
                             <label className="form-label" htmlFor="username"></label>
                             <Field
                               type="text"
                               name="username"
                               className="form-control"
-                              placeholder="Ваш ник"
+                              placeholder={t('login.username')}
                             />
                             {errors.name}
                           </div>
@@ -68,13 +70,13 @@ const Login = () => {
                               type="password"
                               name="password"
                               className="form-control"
-                              placeholder="Пароль"
+                              placeholder={t('login.password')}
                             />
                             {errors.pawwsord}
                           </div>
                           {isErrorAutorizate ? (
                             <div className="alert alert-danger">
-                              Такого пользователя не существует
+                              {t('login.errors.userIsNotExist')}
                             </div>
                           ) : null}
                           <button
@@ -82,7 +84,7 @@ const Login = () => {
                             className="w-100 mb-3 btn btn-outline-primary"
                             disabled={isDisabled}
                           >
-                            Войти
+                            {t('login.login')}
                           </button>
                         </Form>
                       )}
@@ -90,7 +92,8 @@ const Login = () => {
                   </div>
                   <div className="card-footer p-4">
                     <div className="text-center">
-                      <span>Нет аккаунта?</span> <a href="/signup">Регистрация</a>
+                      <span>{t('login.footer.text')}</span>{' '}
+                      <a href="/signup">{t('login.footer.link')}</a>
                     </div>
                   </div>
                 </div>

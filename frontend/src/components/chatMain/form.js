@@ -1,9 +1,11 @@
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { socket } from '../../socket.js';
 import { AutorizationContext } from '../App.js';
 
 const Form = () => {
+  const { t } = useTranslation();
   const { username } = useContext(AutorizationContext);
   const inputRef = useRef(null);
   useEffect(() => {
@@ -28,15 +30,13 @@ const Form = () => {
   };
   return (
     <div className="mt-auto px-5 py-3">
-      {isNetworkError ? (
-        <div class="alert alert-danger">Ошибка сети. Сообщение не доставлено</div>
-      ) : null}
+      {isNetworkError ? <div className="alert alert-danger">{t('chat.networkError')}</div> : null}
       <form onSubmit={handlerSubmit} noValidate className="py-1 border rounded-2">
         <div className="input-group has-validation">
           <input
             name="body"
             aria-label="Новое сообщение"
-            placeholder="Введите сообщение..."
+            placeholder={t('chat.inputTextPlaceholder')}
             className="border-0 p-0 ps-2 form-control"
             onChange={handlerChange}
             value={value}
@@ -55,7 +55,6 @@ const Form = () => {
                 d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
               ></path>
             </svg>
-            <span className="visually-hidden">Отправить</span>
           </button>
         </div>
       </form>
