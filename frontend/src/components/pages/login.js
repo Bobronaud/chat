@@ -25,10 +25,10 @@ const Login = () => {
         navigate('/');
       })
       .catch((e) => {
-        if (e.isAxiosError) {
-          toast.error(t('toasts.networkError'));
-        } else {
+        if (e.response.status === 401) {
           setErrorAutorizate(true);
+        } else {
+          toast.error(t('toasts.networkError'));
         }
         setDisabled(false);
       });

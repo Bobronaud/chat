@@ -11,7 +11,7 @@ import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, renameChannel, removeChannel } from '../slices/channelsSlice.js';
 
 const rollbarConfig = {
-  accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
+  accessToken: '7ca5f4a300f6478ca01aa0a079fcea74',
   environment: 'production',
 };
 const autorization = {
@@ -19,7 +19,6 @@ const autorization = {
   username: window.localStorage.getItem('username'),
 };
 const AutorizationContext = React.createContext(autorization);
-
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
