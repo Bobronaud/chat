@@ -27,7 +27,7 @@ const ru = {
         link: 'Регистрация',
       },
       errors: {
-        userIsNotExist: 'Такого пользователя не существует',
+        userIsNotExist: 'Неверные имя пользователя или пароль',
       },
     },
     page404: {
@@ -63,7 +63,7 @@ const ru = {
       channelAdd: 'Канал создан',
       channelRename: 'Канал переименован',
       channelRemove: 'Канал удален',
-      networkError: 'Ошибка сети',
+      networkError: 'Ошибка соединения',
     },
   },
 };
