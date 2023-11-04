@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NavbarHeader from '../navbarHeader.js';
 import ChatAside from '../chatAside/chatAside.js';
 import ChatMain from '../chatMain/chatMain.js';
@@ -45,7 +47,18 @@ const Chat = () => {
           </div>
         </div>
       </div>
-      <div className="Toastify"></div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

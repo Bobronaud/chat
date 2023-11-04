@@ -11,7 +11,7 @@ import { addChannels, renameChannel, removeChannel } from '../slices/channelsSli
 
 const autorization = {
   isAutorization: window.localStorage.hasOwnProperty('token'),
-  username: null,
+  username: window.localStorage.getItem('username'),
 };
 const AutorizationContext = React.createContext(autorization);
 

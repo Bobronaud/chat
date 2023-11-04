@@ -1,10 +1,10 @@
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as yup from 'yup';
-import { AutorizationContext } from '../App.js';
 import NavbarHeader from '../navbarHeader.js';
 
 const Login = () => {
@@ -12,7 +12,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
-  const auth = useContext(AutorizationContext);
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
     axios
@@ -20,13 +19,17 @@ const Login = () => {
       .then((res) => {
         const { token } = res.data;
         window.localStorage.setItem('token', token);
-        auth.username = username;
+        window.localStorage.setItem('username', username);
       })
       .then(() => {
         navigate('/');
       })
       .catch((e) => {
-        setErrorAutorizate(true);
+        if (e.isAxiosError) {
+          toast.error(t('toasts.networkError'));
+        } else {
+          setErrorAutorizate(true);
+        }
         setDisabled(false);
       });
   };

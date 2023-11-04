@@ -1,11 +1,10 @@
 import { Formik } from 'formik';
 import { Button, Form, InputGroup, Overlay } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
-import { AutorizationContext } from '../App.js';
 import NavbarHeader from '../navbarHeader.js';
 
 const Signup = () => {
@@ -14,7 +13,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
-  const auth = useContext(AutorizationContext);
   yup.setLocale({
     mixed: {
       required: t('signup.errors.notEmpty'),
@@ -40,7 +38,7 @@ const Signup = () => {
       .then((res) => {
         const { token } = res.data;
         window.localStorage.setItem('token', token);
-        auth.username = username;
+        window.localStorage.setItem('username', username);
       })
       .then(() => {
         navigate('/');

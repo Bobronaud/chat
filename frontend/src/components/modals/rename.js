@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
 import { socket } from '../../socket.js';
 
@@ -30,6 +31,7 @@ const Rename = ({ channel }) => {
     if (!channelsNames.includes(value)) {
       socket.emit('renameChannel', { id: channel.id, name: value });
       closeModal();
+      toast.success(t('toasts.channelRename'));
     }
     setDisabled(false);
   };

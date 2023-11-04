@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
 import { socket } from '../../socket.js';
@@ -33,6 +35,7 @@ const Add = () => {
         dispatch(setActive(res.data.id));
       });
       closeModal();
+      toast.success(t('toasts.channelAdd'));
     }
     setDisabled(false);
   };

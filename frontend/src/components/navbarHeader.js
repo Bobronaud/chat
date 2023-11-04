@@ -11,6 +11,7 @@ const NavbarHeader = ({ auth }) => {
   const dispatch = useDispatch();
   const logout = () => {
     window.localStorage.removeItem('token');
+    window.localStorage.removeItem('username');
     dispatch(clearChannels());
     dispatch(clearMessages());
     navigate('/login');

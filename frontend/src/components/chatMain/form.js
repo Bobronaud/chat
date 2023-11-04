@@ -1,12 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { socket } from '../../socket.js';
-import { AutorizationContext } from '../App.js';
 
 const Form = () => {
   const { t } = useTranslation();
-  const { username } = useContext(AutorizationContext);
+  const { username } = window.localStorage;
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();

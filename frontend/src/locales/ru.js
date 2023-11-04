@@ -59,6 +59,12 @@ const ru = {
       inputTextPlaceholder: 'Введите сообщение...',
       networkError: 'Ошибка сети. Сообщение не доставлено',
     },
+    toasts: {
+      channelAdd: 'Канал создан',
+      channelRename: 'Канал переименован',
+      channelRemove: 'Канал удален',
+      networkError: 'Ошибка сети',
+    },
   },
 };
 
