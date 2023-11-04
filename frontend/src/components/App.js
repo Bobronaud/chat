@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 import Login from './pages/login.js';
 import Signup from './pages/signup.js';
 import ChatMain from './pages/chat.js';
@@ -9,6 +10,10 @@ import { socket } from '../socket.js';
 import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, renameChannel, removeChannel } from '../slices/channelsSlice.js';
 
+const rollbarConfig = {
+  accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
+  environment: 'production',
+};
 const autorization = {
   isAutorization: window.localStorage.hasOwnProperty('token'),
   username: window.localStorage.getItem('username'),
@@ -25,16 +30,20 @@ const App = () => {
     return () => socket.disconnect();
   }, [dispatch]);
   return (
-    <AutorizationContext.Provider value={autorization}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="/" element={<ChatMain />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AutorizationContext.Provider>
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+        <AutorizationContext.Provider value={autorization}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+              <Route path="/" element={<ChatMain />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </AutorizationContext.Provider>
+      </ErrorBoundary>
+    </Provider>
   );
 };
 
