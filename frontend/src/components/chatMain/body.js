@@ -1,16 +1,16 @@
 import { useSelector } from 'react-redux';
-import { useRef, useEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import filter from 'leo-profanity';
 
 const Body = () => {
   const { messages } = useSelector((state) => state.messages);
   const { active } = useSelector((state) => state.channels);
   const messagesBox = useRef(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     messagesBox.current.scrollTo({
       top: messagesBox.current.scrollHeight,
     });
-  }, []);
+  }, [messages]);
   const censored = (text) => {
     filter.loadDictionary('en');
     const censoredByEn = filter.clean(text);
