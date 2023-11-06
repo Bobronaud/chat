@@ -10,6 +10,7 @@ import ChatMain from '../chatMain/chatMain.js';
 import Modal from '../modals/modal.js';
 import { addMessages } from '../../slices/messagesSlice.js';
 import { addChannels, setActive } from '../../slices/channelsSlice.js';
+import routes from '../../routes.js';
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Chat = () => {
   useEffect(() => {
     const { token } = window.localStorage;
     axios
-      .get('/api/v1/data', {
+      .get(routes.getData(), {
         headers: {
           Authorization: `Bearer ${token}`,
         },

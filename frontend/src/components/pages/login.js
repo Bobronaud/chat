@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as yup from 'yup';
 import NavbarHeader from '../navbarHeader.js';
+import routes from '../../routes.js';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ const Login = () => {
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
     axios
-      .post('/api/v1/login', { username, password })
+      .post(routes.login(), { username, password })
       .then((res) => {
         const { token } = res.data;
         window.localStorage.setItem('token', token);

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
 import NavbarHeader from '../navbarHeader.js';
+import routes from '../../routes.js';
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const Signup = () => {
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
     axios
-      .post('/api/v1/signup', { username, password })
+      .post(routes.signup(), { username, password })
       .then((res) => {
         const { token } = res.data;
         window.localStorage.setItem('token', token);
