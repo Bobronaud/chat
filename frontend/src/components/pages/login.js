@@ -1,6 +1,7 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik } from 'formik';
+import { Button, Form, FloatingLabel, InputGroup, Overlay } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -11,6 +12,7 @@ import routes from '../../routes.js';
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const targetOverlay = useRef(null);
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const submitHandle = ({ username, password }) => {
@@ -36,8 +38,8 @@ const Login = () => {
   };
 
   const LoginSchema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().required(),
+    username: yup.string().required(t('login.errors.notEmpty')),
+    password: yup.string().required(t('login.errors.notEmpty')),
   });
 
   return (
@@ -55,41 +57,78 @@ const Login = () => {
                       validationSchema={LoginSchema}
                       onSubmit={submitHandle}
                     >
-                      {({ errors }) => (
-                        <Form className="col-8 col-md-8 mt-3 mt-mb-0">
+                      {({ handleSubmit, handleChange, values, errors }) => (
+                        <Form onSubmit={handleSubmit} className="col-8 col-md-8 mt-3 mt-mb-0">
                           <h1 className="text-center mb-4">{t('login.login')}</h1>
-                          <div className="form-group">
-                            <label className="form-label" htmlFor="username"></label>
-                            <Field
-                              type="text"
-                              name="username"
-                              className="form-control"
-                              placeholder={t('login.username')}
-                            />
-                            {errors.name}
-                          </div>
-                          <div className="form-group mb-4">
-                            <label className="form-label" htmlFor="password"></label>
-                            <Field
-                              type="password"
-                              name="password"
-                              className="form-control"
-                              placeholder={t('login.password')}
-                            />
-                            {errors.pawwsord}
-                          </div>
-                          {isErrorAutorizate ? (
-                            <div className="alert alert-danger">
-                              {t('login.errors.userIsNotExist')}
-                            </div>
-                          ) : null}
-                          <button
+                          <InputGroup className="mb-3" hasValidation>
+                            <FloatingLabel controlId="floatingName" label={t('login.username')}>
+                              <Form.Control
+                                type="text"
+                                placeholder={t('login.username')}
+                                name="username"
+                                value={values.username}
+                                onChange={handleChange}
+                                isInvalid={!!errors.username || isErrorAutorizate}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.username}
+                              </Form.Control.Feedback>
+                            </FloatingLabel>
+                          </InputGroup>
+                          <InputGroup className="mb-4" hasValidation>
+                            <FloatingLabel controlId="floatingPassword" label={t('login.password')}>
+                              <Form.Control
+                                ref={targetOverlay}
+                                type="password"
+                                placeholder={t('login.password')}
+                                name="password"
+                                value={values.password}
+                                onChange={handleChange}
+                                isInvalid={!!errors.password || isErrorAutorizate}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.password}
+                              </Form.Control.Feedback>
+                            </FloatingLabel>
+                          </InputGroup>
+                          <Button
                             type="submit"
-                            className="w-100 mb-3 btn btn-outline-primary"
+                            variant="outline-primary"
+                            className="w-100 mb-3"
                             disabled={isDisabled}
                           >
                             {t('login.login')}
-                          </button>
+                          </Button>
+                          <Overlay
+                            target={targetOverlay.current}
+                            show={isErrorAutorizate}
+                            placement="bottom"
+                          >
+                            {({
+                              placement: _placement,
+                              arrowProps: _arrowProps,
+                              show: _show,
+                              popper: _popper,
+                              hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                              ...props
+                            }) => (
+                              <div
+                                {...props}
+                                style={{
+                                  position: 'absolute',
+                                  backgroundColor: 'rgba(250, 100, 100, 0.85)',
+                                  marginLeft: '-20px',
+                                  padding: '2px 10px',
+                                  color: 'white',
+                                  borderRadius: 3,
+                                  opacity: '0.8',
+                                  ...props.style,
+                                }}
+                              >
+                                {t('login.errors.userIsNotExist')}
+                              </div>
+                            )}
+                          </Overlay>
                         </Form>
                       )}
                     </Formik>

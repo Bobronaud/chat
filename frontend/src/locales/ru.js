@@ -28,6 +28,7 @@ const ru = {
       },
       errors: {
         userIsNotExist: 'Неверные имя пользователя или пароль',
+        notEmpty: 'Обязательное поле',
       },
     },
     page404: {

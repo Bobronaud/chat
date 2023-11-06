@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { Button, Form, InputGroup, Overlay } from 'react-bootstrap';
+import { Button, Form, FloatingLabel, InputGroup, Overlay } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,45 +70,56 @@ const Signup = () => {
                         <Form onSubmit={handleSubmit} className="col-8 col-md-8 mt-3 mt-mb-0">
                           <h1 className="text-center mb-4">{t('signup.registration')}</h1>
                           <InputGroup className="mb-4" hasValidation>
-                            <Form.Control
-                              type="text"
-                              placeholder={t('signup.username')}
-                              name="username"
-                              value={values.username}
-                              onChange={handleChange}
-                              isInvalid={!!errors.username}
-                            />
+                            <FloatingLabel controlId="floatingName" label={t('signup.username')}>
+                              <Form.Control
+                                type="text"
+                                placeholder={t('signup.username')}
+                                name="username"
+                                value={values.username}
+                                onChange={handleChange}
+                                isInvalid={!!errors.username}
+                              />
 
-                            <Form.Control.Feedback type="invalid">
-                              {errors.username}
-                            </Form.Control.Feedback>
-                            {}
+                              <Form.Control.Feedback type="invalid">
+                                {errors.username}
+                              </Form.Control.Feedback>
+                            </FloatingLabel>
                           </InputGroup>
                           <InputGroup className="mb-4" hasValidation>
-                            <Form.Control
-                              type="password"
-                              placeholder={t('signup.password')}
-                              name="password"
-                              value={values.password}
-                              onChange={handleChange}
-                              isInvalid={!!errors.password}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {errors.password}
-                            </Form.Control.Feedback>
+                            <FloatingLabel
+                              controlId="floatingPassword"
+                              label={t('signup.password')}
+                            >
+                              <Form.Control
+                                type="password"
+                                name="password"
+                                placeholder={t('signup.password')}
+                                value={values.password}
+                                onChange={handleChange}
+                                isInvalid={!!errors.password}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.password}
+                              </Form.Control.Feedback>
+                            </FloatingLabel>
                           </InputGroup>
                           <InputGroup className="mb-4" hasValidation>
-                            <Form.Control
-                              type="password"
-                              placeholder={t('signup.passwordConfirmation')}
-                              name="passwordConfirmation"
-                              value={values.passwordConfirmation}
-                              onChange={handleChange}
-                              isInvalid={!!errors.passwordConfirmation}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {errors.passwordConfirmation}
-                            </Form.Control.Feedback>
+                            <FloatingLabel
+                              controlId="floatingPasswordConfiramtion"
+                              label={t('signup.passwordConfirmation')}
+                            >
+                              <Form.Control
+                                type="password"
+                                name="passwordConfirmation"
+                                placeholder={t('signup.passwordConfirmation')}
+                                value={values.passwordConfirmation}
+                                onChange={handleChange}
+                                isInvalid={!!errors.passwordConfirmation}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.passwordConfirmation}
+                              </Form.Control.Feedback>
+                            </FloatingLabel>
                           </InputGroup>
                           <Button
                             type="submit"
