@@ -23,7 +23,7 @@ const Channel = (props) => {
           {`# ${name}`}
         </Button>
         <Dropdown.Toggle split variant={isActive ? 'primary' : ''} id="dropdown-split-basic">
-          <span class="visually-hidden">{t('chat.channels.dropdown.hiddenLabel')}</span>
+          <span className="visually-hidden">{t('chat.channels.dropdown.hiddenLabel')}</span>
         </Dropdown.Toggle>
         <Dropdown.Menu className={'flex-grow-0'}>
           <Dropdown.Item
