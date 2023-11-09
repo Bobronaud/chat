@@ -45,11 +45,13 @@ const ru = {
         headerRename: 'Переименовать канал',
         headerRemove: 'Удалить канал?',
         bodyRemove: 'Уверены?',
+        inputLabel: 'Имя канала',
         invalidValue: 'Должно быть уникальным',
       },
       channels: {
         header: 'Каналы',
         dropdown: {
+          hiddenLabel: 'Управление каналом',
           remove: 'Удалить',
           rename: 'Переименовать',
         },
