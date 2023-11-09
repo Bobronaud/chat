@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
-import { socket } from '../../socket.js';
+import socket from '../../socket.js';
 
 const Remove = ({ channel }) => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const Remove = ({ channel }) => {
     dispatch(setActive(null));
   };
   return (
-    <Modal show={true} onHide={closeModal}>
+    <Modal show onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>{t('chat.modals.headerRemove')}</Modal.Title>
       </Modal.Header>

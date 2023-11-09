@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
-import { socket } from '../../socket.js';
+import socket from '../../socket.js';
 
 const Rename = ({ channel }) => {
   const { t } = useTranslation();
@@ -36,7 +39,7 @@ const Rename = ({ channel }) => {
     setDisabled(false);
   };
   return (
-    <Modal show={true} onHide={closeModal}>
+    <Modal show onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>{t('chat.modals.headerRename')}</Modal.Title>
       </Modal.Header>

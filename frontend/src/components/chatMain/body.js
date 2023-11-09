@@ -24,7 +24,9 @@ const Body = () => {
         .filter(({ channelId }) => channelId === active)
         .map(({ body, id, username }) => (
           <div key={id} className="text-break mb-2">
-            <b>{username}</b>: {censored(body)}
+            <b>{username}</b>
+            {': '}
+            {censored(body)}
           </div>
         ))}
     </div>

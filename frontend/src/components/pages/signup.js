@@ -1,5 +1,9 @@
 import { Formik } from 'formik';
-import { Button, Form, FloatingLabel, InputGroup, Overlay } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Overlay from 'react-bootstrap/Overlay';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -66,8 +70,8 @@ const Signup = () => {
                       validationSchema={SignupSchema}
                       onSubmit={submitHandle}
                     >
-                      {({ handleSubmit, handleChange, values, errors }) => (
-                        <Form onSubmit={handleSubmit} className="col-12 col-md-8 mt-3 mb-0">
+                      {(tools) => (
+                        <Form onSubmit={tools.handleSubmit} className="col-12 col-md-8 mt-3 mb-0">
                           <h1 className="text-center mb-4">{t('signup.registration')}</h1>
                           <InputGroup className="mb-4" hasValidation>
                             <FloatingLabel controlId="floatingName" label={t('signup.username')}>
@@ -75,13 +79,13 @@ const Signup = () => {
                                 type="text"
                                 placeholder={t('signup.username')}
                                 name="username"
-                                value={values.username}
-                                onChange={handleChange}
-                                isInvalid={!!errors.username}
+                                value={tools.values.username}
+                                onChange={tools.handleChange}
+                                isInvalid={!!tools.errors.username}
                               />
 
                               <Form.Control.Feedback type="invalid">
-                                {errors.username}
+                                {tools.errors.username}
                               </Form.Control.Feedback>
                             </FloatingLabel>
                           </InputGroup>
@@ -94,12 +98,12 @@ const Signup = () => {
                                 type="password"
                                 name="password"
                                 placeholder={t('signup.password')}
-                                value={values.password}
-                                onChange={handleChange}
-                                isInvalid={!!errors.password}
+                                value={tools.values.password}
+                                onChange={tools.handleChange}
+                                isInvalid={!!tools.errors.password}
                               />
                               <Form.Control.Feedback type="invalid">
-                                {errors.password}
+                                {tools.errors.password}
                               </Form.Control.Feedback>
                             </FloatingLabel>
                           </InputGroup>
@@ -112,12 +116,12 @@ const Signup = () => {
                                 type="password"
                                 name="passwordConfirmation"
                                 placeholder={t('signup.passwordConfirmation')}
-                                value={values.passwordConfirmation}
-                                onChange={handleChange}
-                                isInvalid={!!errors.passwordConfirmation}
+                                value={tools.values.passwordConfirmation}
+                                onChange={tools.handleChange}
+                                isInvalid={!!tools.errors.passwordConfirmation}
                               />
                               <Form.Control.Feedback type="invalid">
-                                {errors.passwordConfirmation}
+                                {tools.errors.passwordConfirmation}
                               </Form.Control.Feedback>
                             </FloatingLabel>
                           </InputGroup>

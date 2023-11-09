@@ -1,5 +1,9 @@
 import { Formik } from 'formik';
-import { Button, Form, FloatingLabel, InputGroup, Overlay } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Overlay from 'react-bootstrap/Overlay';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -46,7 +50,7 @@ const Login = () => {
     <div className="h-100">
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
-          <NavbarHeader auth={false} />
+          <NavbarHeader />
           <div className="container-fluid h-100">
             <div className="row justify-content-center align-content-center h-100">
               <div className="col-12 col-md-6 col-xs-12">
@@ -57,8 +61,11 @@ const Login = () => {
                       validationSchema={LoginSchema}
                       onSubmit={submitHandle}
                     >
-                      {({ handleSubmit, handleChange, values, errors }) => (
-                        <Form onSubmit={handleSubmit} className="col-12 col-md-8 mt-3 mt-mb-0">
+                      {(tools) => (
+                        <Form
+                          onSubmit={tools.handleSubmit}
+                          className="col-12 col-md-8 mt-3 mt-mb-0"
+                        >
                           <h1 className="text-center mb-4">{t('login.login')}</h1>
                           <InputGroup className="mb-3" hasValidation>
                             <FloatingLabel controlId="floatingName" label={t('login.username')}>
@@ -66,12 +73,12 @@ const Login = () => {
                                 type="text"
                                 placeholder={t('login.username')}
                                 name="username"
-                                value={values.username}
-                                onChange={handleChange}
-                                isInvalid={!!errors.username || isErrorAutorizate}
+                                value={tools.values.username}
+                                onChange={tools.handleChange}
+                                isInvalid={!!tools.errors.username || isErrorAutorizate}
                               />
                               <Form.Control.Feedback type="invalid">
-                                {errors.username}
+                                {tools.errors.username}
                               </Form.Control.Feedback>
                             </FloatingLabel>
                           </InputGroup>
@@ -82,12 +89,12 @@ const Login = () => {
                                 type="password"
                                 placeholder={t('login.password')}
                                 name="password"
-                                value={values.password}
-                                onChange={handleChange}
-                                isInvalid={!!errors.password || isErrorAutorizate}
+                                value={tools.values.password}
+                                onChange={tools.handleChange}
+                                isInvalid={!!tools.errors.password || isErrorAutorizate}
                               />
                               <Form.Control.Feedback type="invalid">
-                                {errors.password}
+                                {tools.errors.password}
                               </Form.Control.Feedback>
                             </FloatingLabel>
                           </InputGroup>
@@ -135,7 +142,7 @@ const Login = () => {
                   </div>
                   <div className="card-footer p-4">
                     <div className="text-center">
-                      <span>{t('login.footer.text')}</span>{' '}
+                      <span>{t('login.footer.text')} </span>
                       <a href="/signup">{t('login.footer.link')}</a>
                     </div>
                   </div>

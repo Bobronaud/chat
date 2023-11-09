@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { removeChannel } from './channelsSlice.js';
 
@@ -14,9 +15,11 @@ const messagesSlice = createSlice({
         return;
       }
       state.messages =
-        messages.length > 1 ? [...state.messages, ...messages] : [...state.messages, messages];
+        messages.length > 1
+          ? [...state.messages, ...messages]
+          : [...state.messages, messages];
     },
-    clearMessages: (state, action) => {
+    clearMessages: (state) => {
       state.messages = [];
     },
   },

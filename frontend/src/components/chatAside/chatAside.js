@@ -17,13 +17,12 @@ const ChatAside = () => {
         id="channel-box"
         className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
       >
-        {channels.map((channel) =>
-          channel.removable ? (
-            <Channel key={channel.id} info={channel} active={active} />
-          ) : (
-            <DefaultChannel key={channel.id} info={channel} active={active} />
-          ),
-        )}
+        {channels.map((channel) => {
+          if (channel.removable) {
+            return <Channel key={channel.id} info={channel} active={active} />;
+          }
+          return <DefaultChannel key={channel.id} info={channel} active={active} />;
+        })}
       </ul>
     </div>
   );

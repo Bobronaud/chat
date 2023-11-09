@@ -4,10 +4,9 @@ import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { setActive } from '../../slices/channelsSlice.js';
 import { setModal } from '../../slices/uiSlice.js';
 
-const Channel = (props) => {
+const Channel = ({ info, active }) => {
   const { t } = useTranslation();
-  const { id, name } = props.info;
-  const { active } = props;
+  const { id, name } = info;
   const dispatch = useDispatch();
   const isActive = active === id;
   return (
@@ -25,15 +24,15 @@ const Channel = (props) => {
         <Dropdown.Toggle split variant={isActive ? 'primary' : ''} id="dropdown-split-basic">
           <span className="visually-hidden">{t('chat.channels.dropdown.hiddenLabel')}</span>
         </Dropdown.Toggle>
-        <Dropdown.Menu className={'flex-grow-0'}>
+        <Dropdown.Menu className="flex-grow-0">
           <Dropdown.Item
-            onClick={() => dispatch(setModal({ type: 'remove', channel: props.info }))}
+            onClick={() => dispatch(setModal({ type: 'remove', channel: info }))}
             href="#"
           >
             {t('chat.channels.dropdown.remove')}
           </Dropdown.Item>
           <Dropdown.Item
-            onClick={() => dispatch(setModal({ type: 'rename', channel: props.info }))}
+            onClick={() => dispatch(setModal({ type: 'rename', channel: info }))}
             href="#"
           >
             {t('chat.channels.dropdown.rename')}

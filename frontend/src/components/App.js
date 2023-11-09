@@ -6,7 +6,7 @@ import Login from './pages/login.js';
 import Signup from './pages/signup.js';
 import ChatMain from './pages/chat.js';
 import PageNotFound from './pages/pageNotFound.js';
-import { socket } from '../socket.js';
+import socket from '../socket.js';
 import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, renameChannel, removeChannel } from '../slices/channelsSlice.js';
 
@@ -15,7 +15,7 @@ const rollbarConfig = {
   environment: 'production',
 };
 const autorization = {
-  isAutorization: window.localStorage.hasOwnProperty('token'),
+  isAutorization: Boolean(window.localStorage.getItem('token')),
   username: window.localStorage.getItem('username'),
 };
 const AutorizationContext = React.createContext(autorization);
