@@ -144,7 +144,11 @@ const Signup = () => {
                               <Form.Control.Feedback type="invalid">
                                 {tools.errors.passwordConfirmation}
                               </Form.Control.Feedback>
-                              <ErrorAlert />
+                              {!isUniqueUser && (
+                                <Alert className="mt-2 mb-0" variant="danger">
+                                  {t('signup.errors.userAlreadyExist')}
+                                </Alert>
+                              )}
                             </FloatingLabel>
                           </InputGroup>
                           <Button

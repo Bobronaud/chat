@@ -18,16 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
-  const ErrorAlert = () => {
-    if (isErrorAutorizate) {
-      return (
-        <Alert className="mt-2 mb-0" variant="danger">
-          {t('login.errors.userIsNotExist')}
-        </Alert>
-      );
-    }
-    return null;
-  };
+
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
     axios
@@ -116,7 +107,11 @@ const Login = () => {
                               <Form.Control.Feedback type="invalid">
                                 {tools.errors.password}
                               </Form.Control.Feedback>
-                              <ErrorAlert />
+                              {isErrorAutorizate && (
+                                <Alert className="mt-2 mb-0" variant="danger">
+                                  {t('login.errors.userIsNotExist')}
+                                </Alert>
+                              )}
                             </FloatingLabel>
                           </InputGroup>
                           <Button
