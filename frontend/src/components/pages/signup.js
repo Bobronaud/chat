@@ -17,16 +17,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
-  const ErrorAlert = () => {
-    if (!isUniqueUser) {
-      return (
-        <Alert className="mt-2 mb-0" variant="danger">
-          {t('signup.errors.userAlreadyExist')}
-        </Alert>
-      );
-    }
-    return null;
-  };
   yup.setLocale({
     mixed: {
       required: t('signup.errors.notEmpty'),
