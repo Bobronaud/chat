@@ -23,7 +23,7 @@ const ru = {
       username: 'Ваш ник',
       password: 'Пароль',
       footer: {
-        text: 'Нет аккаунта?',
+        text: 'Нет аккаунта? ',
         link: 'Регистрация',
       },
       errors: {

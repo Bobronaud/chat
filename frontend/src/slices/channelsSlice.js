@@ -11,10 +11,7 @@ const channelsSlice = createSlice({
   reducers: {
     addChannels: (state, action) => {
       const channels = action.payload;
-      state.channels =
-        channels.length > 1
-          ? [...state.channels, ...channels]
-          : [...state.channels, channels];
+      state.channels = [...state.channels, channels].flat();
     },
     renameChannel: (state, action) => {
       const channel = action.payload;
@@ -26,8 +23,8 @@ const channelsSlice = createSlice({
     },
     setActive: (state, action) => {
       const value = action.payload;
-      state.active =
-        value || state.channels.find((e) => e.name === 'general').id;
+      const defaultChannel = state.channels.find((e) => e.name === 'general');
+      state.active = value || defaultChannel.id;
     },
     clearChannels: (state) => {
       state.channels = [];

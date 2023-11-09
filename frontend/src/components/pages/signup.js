@@ -3,9 +3,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Overlay from 'react-bootstrap/Overlay';
+import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
@@ -14,10 +14,19 @@ import routes from '../../routes.js';
 
 const Signup = () => {
   const { t } = useTranslation();
-  const targetOverlay = useRef(null);
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
+  const ErrorAlert = () => {
+    if (!isUniqueUser) {
+      return (
+        <Alert className="mt-2 mb-0" variant="danger">
+          {t('signup.errors.userAlreadyExist')}
+        </Alert>
+      );
+    }
+    return null;
+  };
   yup.setLocale({
     mixed: {
       required: t('signup.errors.notEmpty'),
@@ -66,15 +75,27 @@ const Signup = () => {
                 <div className="card shadow-sm">
                   <div className="card-body row p-5 justify-content-center align-content-center">
                     <Formik
-                      initialValues={{ username: '', password: '', passwordConfirmation: '' }}
+                      initialValues={{
+                        username: '',
+                        password: '',
+                        passwordConfirmation: '',
+                      }}
                       validationSchema={SignupSchema}
                       onSubmit={submitHandle}
                     >
                       {(tools) => (
-                        <Form onSubmit={tools.handleSubmit} className="col-12 col-md-8 mt-3 mb-0">
-                          <h1 className="text-center mb-4">{t('signup.registration')}</h1>
+                        <Form
+                          onSubmit={tools.handleSubmit}
+                          className="col-12 col-md-8 mt-3 mb-0"
+                        >
+                          <h1 className="text-center mb-4">
+                            {t('signup.registration')}
+                          </h1>
                           <InputGroup className="mb-4" hasValidation>
-                            <FloatingLabel controlId="floatingName" label={t('signup.username')}>
+                            <FloatingLabel
+                              controlId="floatingName"
+                              label={t('signup.username')}
+                            >
                               <Form.Control
                                 type="text"
                                 placeholder={t('signup.username')}
@@ -123,6 +144,7 @@ const Signup = () => {
                               <Form.Control.Feedback type="invalid">
                                 {tools.errors.passwordConfirmation}
                               </Form.Control.Feedback>
+                              <ErrorAlert />
                             </FloatingLabel>
                           </InputGroup>
                           <Button
@@ -130,39 +152,9 @@ const Signup = () => {
                             variant="outline-primary"
                             className="w-100 mb-3"
                             disabled={isDisabled}
-                            ref={targetOverlay}
                           >
                             {t('signup.register')}
                           </Button>
-                          <Overlay
-                            target={targetOverlay.current}
-                            show={!isUniqueUser}
-                            placement="bottom"
-                          >
-                            {({
-                              placement: _placement,
-                              arrowProps: _arrowProps,
-                              show: _show,
-                              popper: _popper,
-                              hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                              ...props
-                            }) => (
-                              <div
-                                {...props}
-                                style={{
-                                  position: 'absolute',
-                                  backgroundColor: 'rgba(255, 100, 100, 0.85)',
-                                  margin: '10px auto',
-                                  padding: '2px 10px',
-                                  color: 'white',
-                                  borderRadius: 3,
-                                  ...props.style,
-                                }}
-                              >
-                                {t('signup.errors.userAlreadyExist')}
-                              </div>
-                            )}
-                          </Overlay>
                         </Form>
                       )}
                     </Formik>

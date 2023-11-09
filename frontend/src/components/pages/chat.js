@@ -44,7 +44,7 @@ const Chat = () => {
           <div className="row h-100 bg-white flex-md-row">
             <ChatAside />
             <ChatMain />
-            {type ? <Modal type={type} channel={channel} /> : null}
+            <Modal type={type} channel={channel} />
           </div>
         </div>
       </div>

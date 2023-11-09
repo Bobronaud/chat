@@ -3,9 +3,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Overlay from 'react-bootstrap/Overlay';
+import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -16,9 +16,18 @@ import routes from '../../routes.js';
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const targetOverlay = useRef(null);
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
+  const ErrorAlert = () => {
+    if (isErrorAutorizate) {
+      return (
+        <Alert className="mt-2 mb-0" variant="danger">
+          {t('login.errors.userIsNotExist')}
+        </Alert>
+      );
+    }
+    return null;
+  };
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
     axios
@@ -66,16 +75,23 @@ const Login = () => {
                           onSubmit={tools.handleSubmit}
                           className="col-12 col-md-8 mt-3 mt-mb-0"
                         >
-                          <h1 className="text-center mb-4">{t('login.login')}</h1>
+                          <h1 className="text-center mb-4">
+                            {t('login.login')}
+                          </h1>
                           <InputGroup className="mb-3" hasValidation>
-                            <FloatingLabel controlId="floatingName" label={t('login.username')}>
+                            <FloatingLabel
+                              controlId="floatingName"
+                              label={t('login.username')}
+                            >
                               <Form.Control
                                 type="text"
                                 placeholder={t('login.username')}
                                 name="username"
                                 value={tools.values.username}
                                 onChange={tools.handleChange}
-                                isInvalid={!!tools.errors.username || isErrorAutorizate}
+                                isInvalid={
+                                  !!tools.errors.username || isErrorAutorizate
+                                }
                               />
                               <Form.Control.Feedback type="invalid">
                                 {tools.errors.username}
@@ -83,19 +99,24 @@ const Login = () => {
                             </FloatingLabel>
                           </InputGroup>
                           <InputGroup className="mb-4" hasValidation>
-                            <FloatingLabel controlId="floatingPassword" label={t('login.password')}>
+                            <FloatingLabel
+                              controlId="floatingPassword"
+                              label={t('login.password')}
+                            >
                               <Form.Control
-                                ref={targetOverlay}
                                 type="password"
                                 placeholder={t('login.password')}
                                 name="password"
                                 value={tools.values.password}
                                 onChange={tools.handleChange}
-                                isInvalid={!!tools.errors.password || isErrorAutorizate}
+                                isInvalid={
+                                  !!tools.errors.password || isErrorAutorizate
+                                }
                               />
                               <Form.Control.Feedback type="invalid">
                                 {tools.errors.password}
                               </Form.Control.Feedback>
+                              <ErrorAlert />
                             </FloatingLabel>
                           </InputGroup>
                           <Button
@@ -106,43 +127,13 @@ const Login = () => {
                           >
                             {t('login.login')}
                           </Button>
-                          <Overlay
-                            target={targetOverlay.current}
-                            show={isErrorAutorizate}
-                            placement="bottom"
-                          >
-                            {({
-                              placement: _placement,
-                              arrowProps: _arrowProps,
-                              show: _show,
-                              popper: _popper,
-                              hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                              ...props
-                            }) => (
-                              <div
-                                {...props}
-                                style={{
-                                  position: 'absolute',
-                                  backgroundColor: 'rgba(250, 100, 100, 0.85)',
-                                  marginLeft: '-20px',
-                                  padding: '2px 10px',
-                                  color: 'white',
-                                  borderRadius: 3,
-                                  opacity: '0.8',
-                                  ...props.style,
-                                }}
-                              >
-                                {t('login.errors.userIsNotExist')}
-                              </div>
-                            )}
-                          </Overlay>
                         </Form>
                       )}
                     </Formik>
                   </div>
                   <div className="card-footer p-4">
                     <div className="text-center">
-                      <span>{t('login.footer.text')} </span>
+                      {t('login.footer.text')}
                       <a href="/signup">{t('login.footer.link')}</a>
                     </div>
                   </div>

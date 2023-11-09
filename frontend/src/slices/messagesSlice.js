@@ -14,10 +14,7 @@ const messagesSlice = createSlice({
       if (messages.length === 0) {
         return;
       }
-      state.messages =
-        messages.length > 1
-          ? [...state.messages, ...messages]
-          : [...state.messages, messages];
+      state.messages = [...state.messages, messages].flat();
     },
     clearMessages: (state) => {
       state.messages = [];
