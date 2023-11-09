@@ -58,7 +58,7 @@ const Signup = () => {
           <NavbarHeader auth={false} />
           <div className="container-fluid h-100">
             <div className="row justify-content-center align-content-center h-100">
-              <div className="col-6 col-md-6 col-xxl-6">
+              <div className="col-12 col-md-6 col-xs-12">
                 <div className="card shadow-sm">
                   <div className="card-body row p-5 justify-content-center align-content-center">
                     <Formik
@@ -67,7 +67,7 @@ const Signup = () => {
                       onSubmit={submitHandle}
                     >
                       {({ handleSubmit, handleChange, values, errors }) => (
-                        <Form onSubmit={handleSubmit} className="col-8 col-md-8 mt-3 mt-mb-0">
+                        <Form onSubmit={handleSubmit} className="col-12 col-md-8 mt-3 mb-0">
                           <h1 className="text-center mb-4">{t('signup.registration')}</h1>
                           <InputGroup className="mb-4" hasValidation>
                             <FloatingLabel controlId="floatingName" label={t('signup.username')}>

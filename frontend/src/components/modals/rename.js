@@ -43,9 +43,12 @@ const Rename = ({ channel }) => {
       <Modal.Body>
         <Form onSubmit={handlerSubmit}>
           <InputGroup hasValidation>
-            <Form.Label visuallyHidden="true">{t('chat.modals.inputLabel')}</Form.Label>
+            <Form.Label htmlFor="channelName" visuallyHidden="true">
+              {t('chat.modals.inputLabel')}
+            </Form.Label>
             <Form.Control
               required
+              id="channelName"
               isInvalid={!isValid}
               className="mb-2"
               ref={inputRef}
