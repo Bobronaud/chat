@@ -1,6 +1,10 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState,
+  useContext,
+  useEffect,
+  useRef
+} from 'react';
 import { SocketContext } from '../../init.js';
 
 const Form = () => {

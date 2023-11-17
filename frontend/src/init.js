@@ -5,17 +5,15 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { io } from 'socket.io-client';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { configureStore } from '@reduxjs/toolkit';
-import App from './components/App';
+import App from './components/App.js';
 import resources from './locales/index.js';
-import channelsReducer from './slices/channelsSlice.js';
-import messagesReducer from './slices/messagesSlice.js';
-import uiReducer from './slices/uiSlice.js';
-import { addMessages } from './slices/messagesSlice.js';
-import {
+import channelsReducer, {
   addChannels,
   renameChannel,
   removeChannel,
 } from './slices/channelsSlice.js';
+import uiReducer from './slices/uiSlice.js';
+import messagesReducer, { addMessages } from './slices/messagesSlice.js';
 
 const SocketContext = React.createContext();
 
@@ -40,10 +38,8 @@ const init = async () => {
   });
 
   // "undefined" means the URL will be computed from the `window.location` object
-  const URL =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : undefined;
+  const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : undefined;
+
   const socket = io(URL);
   socket.on('newMessage', (data) => store.dispatch(addMessages(data)));
   socket.on('newChannel', (data) => store.dispatch(addChannels(data)));

@@ -10,20 +10,18 @@ const autorization = {
   username: window.localStorage.getItem('username'),
 };
 const AutorizationContext = React.createContext();
-const App = () => {
-  return (
-    <AutorizationContext.Provider value={autorization}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="/" element={<ChatMain />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AutorizationContext.Provider>
-  );
-};
+const App = () => (
+  <AutorizationContext.Provider value={autorization}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="/" element={<ChatMain />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </BrowserRouter>
+  </AutorizationContext.Provider>
+);
 
 export default App;
 export { AutorizationContext };
