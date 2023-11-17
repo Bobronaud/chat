@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -7,11 +7,12 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
-import socket from '../../socket.js';
+import { SocketContext } from '../../init.js';
 
 const Rename = ({ channel }) => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
+  const socket = useContext(SocketContext);
   useEffect(() => {
     inputRef.current.select();
   }, []);

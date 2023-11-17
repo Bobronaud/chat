@@ -1,12 +1,13 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useRef } from 'react';
-import socket from '../../socket.js';
+import { useState, useContext, useEffect, useRef } from 'react';
+import { SocketContext } from '../../init.js';
 
 const Form = () => {
   const { t } = useTranslation();
   const { username } = window.localStorage;
   const inputRef = useRef(null);
+  const socket = useContext(SocketContext);
   useEffect(() => {
     inputRef.current.focus();
   });
@@ -29,8 +30,14 @@ const Form = () => {
   };
   return (
     <div className="mt-auto px-5 py-3">
-      {isNetworkError ? <div className="alert alert-danger">{t('chat.networkError')}</div> : null}
-      <form onSubmit={handlerSubmit} noValidate className="py-1 border rounded-2">
+      {isNetworkError ? (
+        <div className="alert alert-danger">{t('chat.networkError')}</div>
+      ) : null}
+      <form
+        onSubmit={handlerSubmit}
+        noValidate
+        className="py-1 border rounded-2"
+      >
         <div className="input-group has-validation">
           <input
             name="body"
@@ -41,7 +48,11 @@ const Form = () => {
             value={value}
             ref={inputRef}
           />
-          <button type="submit" className="btn btn-group-vertical" disabled={isDisabled}>
+          <button
+            type="submit"
+            className="btn btn-group-vertical"
+            disabled={isDisabled}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"

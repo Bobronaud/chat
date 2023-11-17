@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
-import socket from '../../socket.js';
+import { SocketContext } from '../../init.js';
 
 const Remove = ({ channel }) => {
   const { t } = useTranslation();
   const [isDisabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
+  const socket = useContext(SocketContext);
   const closeModal = () => {
     dispatch(setModal({ type: null }));
   };
@@ -32,7 +33,11 @@ const Remove = ({ channel }) => {
           <Button className="me-2" variant="secondary" onClick={closeModal}>
             {t('chat.modals.buttonClose')}
           </Button>
-          <Button disabled={isDisabled} variant="danger" onClick={handlerSubmit}>
+          <Button
+            disabled={isDisabled}
+            variant="danger"
+            onClick={handlerSubmit}
+          >
             {t('chat.modals.buttonRemove')}
           </Button>
         </div>

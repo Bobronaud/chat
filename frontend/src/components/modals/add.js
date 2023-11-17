@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -9,11 +9,12 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
-import socket from '../../socket.js';
+import { SocketContext } from '../../init.js';
 
 const Add = () => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
+  const socket = useContext(SocketContext);
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -50,7 +51,9 @@ const Add = () => {
       <Modal.Body>
         <Form onSubmit={handlerSubmit}>
           <InputGroup hasValidation>
-            <Form.Label visuallyHidden="true">{t('chat.modals.inputLabel')}</Form.Label>
+            <Form.Label visuallyHidden="true">
+              {t('chat.modals.inputLabel')}
+            </Form.Label>
             <Form.Control
               required
               isInvalid={!isValid}
