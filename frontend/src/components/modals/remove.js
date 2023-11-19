@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
-import { SocketContext } from '../../init.js';
+import { SocketContext } from '../../contexts.js';
 
 const Remove = ({ channel }) => {
   const { t } = useTranslation();
@@ -33,11 +33,7 @@ const Remove = ({ channel }) => {
           <Button className="me-2" variant="secondary" onClick={closeModal}>
             {t('chat.modals.buttonClose')}
           </Button>
-          <Button
-            disabled={isDisabled}
-            variant="danger"
-            onClick={handlerSubmit}
-          >
+          <Button disabled={isDisabled} variant="danger" onClick={handlerSubmit}>
             {t('chat.modals.buttonRemove')}
           </Button>
         </div>

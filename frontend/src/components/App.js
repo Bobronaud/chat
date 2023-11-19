@@ -4,12 +4,13 @@ import Login from './pages/login.js';
 import Signup from './pages/signup.js';
 import ChatMain from './pages/chat.js';
 import PageNotFound from './pages/pageNotFound.js';
+import { AutorizationContext } from '../contexts.js';
 
 const autorization = {
   isAutorization: Boolean(window.localStorage.getItem('token')),
   username: window.localStorage.getItem('username'),
 };
-const AutorizationContext = React.createContext();
+
 const App = () => (
   <AutorizationContext.Provider value={autorization}>
     <BrowserRouter>
@@ -24,4 +25,3 @@ const App = () => (
 );
 
 export default App;
-export { AutorizationContext };

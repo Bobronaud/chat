@@ -1,9 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState,
-  useContext,
-  useRef,
-  useEffect
-} from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -11,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
-import { SocketContext } from '../../init.js';
+import { SocketContext } from '../../contexts.js';
 
 const Rename = ({ channel }) => {
   const { t } = useTranslation();
@@ -64,9 +60,7 @@ const Rename = ({ channel }) => {
               value={value}
               type="text"
             />
-            <Form.Control.Feedback type="invalid">
-              {t('chat.modals.invalidValue')}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t('chat.modals.invalidValue')}</Form.Control.Feedback>
           </InputGroup>
 
           <div className="d-flex justify-content-end">

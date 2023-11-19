@@ -7,15 +7,10 @@ import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { configureStore } from '@reduxjs/toolkit';
 import App from './components/App.js';
 import resources from './locales/index.js';
-import channelsReducer, {
-  addChannels,
-  renameChannel,
-  removeChannel,
-} from './slices/channelsSlice.js';
+import channelsReducer, { addChannels, renameChannel, removeChannel } from './slices/channelsSlice.js';
 import uiReducer from './slices/uiSlice.js';
 import messagesReducer, { addMessages } from './slices/messagesSlice.js';
-
-const SocketContext = React.createContext();
+import { SocketContext } from './contexts.js';
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -66,4 +61,3 @@ const init = async () => {
 };
 
 export default init;
-export { SocketContext };
