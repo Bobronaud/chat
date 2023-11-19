@@ -3,7 +3,7 @@ import {
   useState,
   useContext,
   useRef,
-  useEffect
+  useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';

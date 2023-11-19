@@ -4,7 +4,7 @@ import {
   useState,
   useContext,
   useEffect,
-  useRef
+  useRef,
 } from 'react';
 import { SocketContext } from '../../contexts.js';
 
