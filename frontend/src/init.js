@@ -51,19 +51,19 @@ const init = async () => {
         errorCallback(res.status !== 'ok');
       });
     },
-    newChannel:(data) => {
+    newChannel: (data) => {
       socket.emit('newChannel', data, (res) => {
         store.dispatch(setActive(res.data.id));
       });
     },
-    removeChannel:(id) => {
+    removeChannel: (id) => {
       socket.emit('removeChannel', id);
     },
-    renameChannel:(data) => {
+    renameChannel: (data) => {
       socket.emit('renameChannel', data);
     },
   };
-  
+
   api.connect();
 
   const rollbarConfig = {

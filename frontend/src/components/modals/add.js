@@ -39,7 +39,7 @@ const Add = () => {
     setDisabled(true);
     setValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
-      api.newChannel({ name: value })
+      api.newChannel({ name: value });
       closeModal();
       toast.success(t('toasts.channelAdd'));
     }
