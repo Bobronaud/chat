@@ -5,19 +5,19 @@ import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
-import { SocketContext } from '../../contexts.js';
+import { ApiContext } from '../../contexts.js';
 
 const Remove = ({ channel }) => {
   const { t } = useTranslation();
   const [isDisabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
-  const socket = useContext(SocketContext);
+  const api = useContext(ApiContext);
   const closeModal = () => {
     dispatch(setModal({ type: null }));
   };
   const handlerSubmit = () => {
     setDisabled(true);
-    socket.emit('removeChannel', { id: channel.id });
+    api.removeChannel({ id: channel.id });
     closeModal();
     toast.success(t('toasts.channelRemove'));
     dispatch(setActive(null));

@@ -6,13 +6,13 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { SocketContext } from '../../contexts.js';
+import { ApiContext } from '../../contexts.js';
 
 const Form = () => {
   const { t } = useTranslation();
   const { username } = window.localStorage;
   const inputRef = useRef(null);
-  const socket = useContext(SocketContext);
+  const api = useContext(ApiContext);
   useEffect(() => {
     inputRef.current.focus();
   });
@@ -27,9 +27,7 @@ const Form = () => {
     e.preventDefault();
     setDisabled(true);
     const data = { body: value, channelId: active, username };
-    socket.emit('newMessage', data, (res) => {
-      setNetworkError(res.status !== 'ok');
-    });
+    api.newMessage(data, setNetworkError);
     setValue('');
     setDisabled(false);
   };

@@ -12,12 +12,12 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import { setModal } from '../../slices/uiSlice.js';
-import { SocketContext } from '../../contexts.js';
+import { ApiContext } from '../../contexts.js';
 
 const Rename = ({ channel }) => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
-  const socket = useContext(SocketContext);
+  const api = useContext(ApiContext);
   useEffect(() => {
     inputRef.current.select();
   }, []);
@@ -38,7 +38,7 @@ const Rename = ({ channel }) => {
     setDisabled(true);
     setIsValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
-      socket.emit('renameChannel', { id: channel.id, name: value });
+      api.renameChannel({ id: channel.id, name: value });
       closeModal();
       toast.success(t('toasts.channelRename'));
     }

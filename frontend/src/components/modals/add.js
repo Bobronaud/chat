@@ -13,13 +13,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setModal } from '../../slices/uiSlice.js';
-import { setActive } from '../../slices/channelsSlice.js';
-import { SocketContext } from '../../contexts.js';
+import { ApiContext } from '../../contexts.js';
 
 const Add = () => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
-  const socket = useContext(SocketContext);
+  const api = useContext(ApiContext);
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -40,9 +39,7 @@ const Add = () => {
     setDisabled(true);
     setValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
-      socket.emit('newChannel', { name: value }, (res) => {
-        dispatch(setActive(res.data.id));
-      });
+      api.newChannel({ name: value })
       closeModal();
       toast.success(t('toasts.channelAdd'));
     }

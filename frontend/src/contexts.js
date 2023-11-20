@@ -1,4 +1,4 @@
 import React from 'react';
 
-export const SocketContext = React.createContext();
+export const ApiContext = React.createContext();
 export const AutorizationContext = React.createContext();
