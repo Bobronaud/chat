@@ -22,8 +22,7 @@ const Remove = ({ channel }) => {
       closeModal();
       toast.success(t('toasts.channelRemove'));
       dispatch(setActive(null));
-    }
-    catch (e) {
+    } catch (err) {
       toast.error(t('toasts.networkError'));
     }
   };

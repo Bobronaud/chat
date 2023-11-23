@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setModal } from '../../slices/uiSlice.js';
 import { ApiContext } from '../../contexts.js';
-import { setActive } from '../../slices/channelsSlice.js' 
+import { setActive } from '../../slices/channelsSlice.js';
 
 const Add = () => {
   const { t } = useTranslation();
@@ -45,8 +45,7 @@ const Add = () => {
         dispatch(setActive(res.data.id));
         closeModal();
         toast.success(t('toasts.channelAdd'));
-      }
-      catch (err) {
+      } catch (err) {
         toast.error(t('toasts.networkError'));
       }
     }

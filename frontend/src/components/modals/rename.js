@@ -42,8 +42,7 @@ const Rename = ({ channel }) => {
         await api.renameChannel({ id: channel.id, name: value });
         closeModal();
         toast.success(t('toasts.channelRename'));
-      }
-      catch (e) {
+      } catch (err) {
         toast.error(t('toasts.networkError'));
       }
     }

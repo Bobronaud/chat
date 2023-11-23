@@ -31,9 +31,8 @@ const Form = () => {
       await api.newMessage(data);
       setValue('');
       setDisabled(false);
-    }
-    catch (e) {
-      setNetworkError(true)
+    } catch (err) {
+      setNetworkError(true);
     }
   };
   return (
