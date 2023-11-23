@@ -33,14 +33,19 @@ const Rename = ({ channel }) => {
   const handlerChange = (e) => {
     setValue(e.target.value);
   };
-  const handlerSubmit = (e) => {
+  const handlerSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
     setIsValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
-      api.renameChannel({ id: channel.id, name: value });
-      closeModal();
-      toast.success(t('toasts.channelRename'));
+      try {
+        await api.renameChannel({ id: channel.id, name: value });
+        closeModal();
+        toast.success(t('toasts.channelRename'));
+      }
+      catch (e) {
+        toast.error(t('toasts.networkError'));
+      }
     }
     setDisabled(false);
   };

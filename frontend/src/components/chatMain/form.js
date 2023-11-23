@@ -23,13 +23,18 @@ const Form = () => {
   const handlerChange = (e) => {
     setValue(e.target.value);
   };
-  const handlerSubmit = (e) => {
+  const handlerSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
     const data = { body: value, channelId: active, username };
-    api.newMessage(data, setNetworkError);
-    setValue('');
-    setDisabled(false);
+    try {
+      await api.newMessage(data);
+      setValue('');
+      setDisabled(false);
+    }
+    catch (e) {
+      setNetworkError(true)
+    }
   };
   return (
     <div className="mt-auto px-5 py-3">

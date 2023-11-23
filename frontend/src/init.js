@@ -11,7 +11,6 @@ import channelsReducer, {
   addChannels,
   renameChannel,
   removeChannel,
-  setActive,
 } from './slices/channelsSlice.js';
 import uiReducer from './slices/uiSlice.js';
 import messagesReducer, { addMessages } from './slices/messagesSlice.js';
@@ -40,31 +39,16 @@ const init = async () => {
   const socket = io();
 
   const api = {
-    connect: () => {
-      socket.on('newMessage', (data) => store.dispatch(addMessages(data)));
-      socket.on('newChannel', (data) => store.dispatch(addChannels(data)));
-      socket.on('renameChannel', (data) => store.dispatch(renameChannel(data)));
-      socket.on('removeChannel', (data) => store.dispatch(removeChannel(data)));
-    },
-    newMessage: (data, errorCallback) => {
-      socket.emit('newMessage', data, (res) => {
-        errorCallback(res.status !== 'ok');
-      });
-    },
-    newChannel: (data) => {
-      socket.emit('newChannel', data, (res) => {
-        store.dispatch(setActive(res.data.id));
-      });
-    },
-    removeChannel: (id) => {
-      socket.emit('removeChannel', id);
-    },
-    renameChannel: (data) => {
-      socket.emit('renameChannel', data);
-    },
+    newMessage: (data) => socket.timeout(5000).emitWithAck('newMessage', data),
+    newChannel: (data) => socket.timeout(5000).emitWithAck('newChannel', data),
+    removeChannel: (id) => socket.timeout(5000).emitWithAck('removeChannel', id),
+    renameChannel: (data) => socket.timeout(5000).emitWithAck('renameChannel', data),
   };
 
-  api.connect();
+  socket.on('newMessage', (data) => store.dispatch(addMessages(data)));
+  socket.on('newChannel', (data) => store.dispatch(addChannels(data)));
+  socket.on('renameChannel', (data) => store.dispatch(renameChannel(data)));
+  socket.on('removeChannel', (data) => store.dispatch(removeChannel(data)));
 
   const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,

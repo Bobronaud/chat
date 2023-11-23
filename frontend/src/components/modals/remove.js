@@ -15,12 +15,17 @@ const Remove = ({ channel }) => {
   const closeModal = () => {
     dispatch(setModal({ type: null }));
   };
-  const handlerSubmit = () => {
+  const handlerSubmit = async () => {
     setDisabled(true);
-    api.removeChannel({ id: channel.id });
-    closeModal();
-    toast.success(t('toasts.channelRemove'));
-    dispatch(setActive(null));
+    try {
+      await api.removeChannel({ id: channel.id });
+      closeModal();
+      toast.success(t('toasts.channelRemove'));
+      dispatch(setActive(null));
+    }
+    catch (e) {
+      toast.error(t('toasts.networkError'));
+    }
   };
   return (
     <Modal show onHide={closeModal}>

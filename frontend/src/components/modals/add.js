@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setModal } from '../../slices/uiSlice.js';
 import { ApiContext } from '../../contexts.js';
+import { setActive } from '../../slices/channelsSlice.js' 
 
 const Add = () => {
   const { t } = useTranslation();
@@ -34,14 +35,20 @@ const Add = () => {
   const handlerChange = (e) => {
     setValue(e.target.value);
   };
-  const handlerSubmit = (e) => {
+  const handlerSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
     setValid(!channelsNames.includes(value));
     if (!channelsNames.includes(value)) {
-      api.newChannel({ name: value });
-      closeModal();
-      toast.success(t('toasts.channelAdd'));
+      try {
+        const res = await api.newChannel({ name: value });
+        dispatch(setActive(res.data.id));
+        closeModal();
+        toast.success(t('toasts.channelAdd'));
+      }
+      catch (err) {
+        toast.error(t('toasts.networkError'));
+      }
     }
     setDisabled(false);
   };
