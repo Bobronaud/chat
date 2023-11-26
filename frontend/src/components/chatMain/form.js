@@ -6,8 +6,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { ApiContext } from '../../contexts.js';
-import { AutorizationContext } from '../../contexts.js';
+import { ApiContext, AutorizationContext } from '../../contexts.js';
 
 const Form = () => {
   const { t } = useTranslation();
