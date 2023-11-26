@@ -25,7 +25,7 @@ const autorizationApi = {
   },
   isAutorization() {
     return Boolean(this.user.token);
-  }
+  },
 };
 
 const App = () => (
