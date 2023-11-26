@@ -7,20 +7,25 @@ import PageNotFound from './pages/pageNotFound.js';
 import { AutorizationContext } from '../contexts.js';
 
 const autorizationApi = {
-  login: (token, username) => {
+  user: {
+    token: window.localStorage.getItem('token'),
+    username: window.localStorage.getItem('username'),
+  },
+  login(token, username) {
     window.localStorage.setItem('token', token);
     window.localStorage.setItem('username', username);
+    this.user.token = token;
+    this.user.username = username;
   },
-  logout: () => {
+  logout() {
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('username');
+    this.user.token = null;
+    this.user.username = null;
   },
-  getData: () => {
-    const token = window.localStorage.getItem('token');
-    const username = window.localStorage.getItem('username');
-    return { token, username };
-  },
-  isAutorization: () => Boolean(window.localStorage.getItem('token')),
+  isAutorization() {
+    return Boolean(this.user.token);
+  }
 };
 
 const App = () => (
