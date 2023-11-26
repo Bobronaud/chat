@@ -7,12 +7,13 @@ import {
   useRef,
 } from 'react';
 import { ApiContext } from '../../contexts.js';
+import { AutorizationContext } from '../../contexts.js';
 
 const Form = () => {
   const { t } = useTranslation();
-  const { username } = window.localStorage;
   const inputRef = useRef(null);
   const api = useContext(ApiContext);
+  const authApi = useContext(AutorizationContext);
   useEffect(() => {
     inputRef.current.focus();
   });
@@ -26,6 +27,7 @@ const Form = () => {
   const handlerSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
+    const { username } = authApi.getData();
     const data = { body: value, channelId: active, username };
     try {
       await api.newMessage(data);

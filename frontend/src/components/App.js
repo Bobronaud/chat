@@ -6,13 +6,25 @@ import ChatMain from './pages/chat.js';
 import PageNotFound from './pages/pageNotFound.js';
 import { AutorizationContext } from '../contexts.js';
 
-const autorization = {
-  isAutorization: Boolean(window.localStorage.getItem('token')),
-  username: window.localStorage.getItem('username'),
+const autorizationApi = {
+  login: (token, username) => {
+    window.localStorage.setItem('token', token);
+    window.localStorage.setItem('username', username);
+  },
+  logout: () => {
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('username');
+  },
+  getData: () => {
+    const token = window.localStorage.getItem('token');
+    const username = window.localStorage.getItem('username');
+    return { token, username };
+  },
+  isAutorization: () => Boolean(window.localStorage.getItem('token')),
 };
 
 const App = () => (
-  <AutorizationContext.Provider value={autorization}>
+  <AutorizationContext.Provider value={autorizationApi}>
     <BrowserRouter>
       <Routes>
         <Route path="login" element={<Login />} />

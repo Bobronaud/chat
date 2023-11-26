@@ -5,18 +5,21 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
 import NavbarHeader from '../navbarHeader.js';
 import routes from '../../routes.js';
+import { AutorizationContext } from '../../contexts.js';
 
 const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
+  const authApi = useContext(AutorizationContext);
+
   yup.setLocale({
     mixed: {
       required: t('signup.errors.notEmpty'),
@@ -41,8 +44,7 @@ const Signup = () => {
       .post(routes.signup(), { username, password })
       .then((res) => {
         const { token } = res.data;
-        window.localStorage.setItem('token', token);
-        window.localStorage.setItem('username', username);
+        authApi.login(token, username);
       })
       .then(() => {
         navigate('/');
@@ -58,7 +60,7 @@ const Signup = () => {
     <div className="h-100">
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
-          <NavbarHeader auth={false} />
+          <NavbarHeader />
           <div className="container-fluid h-100">
             <div className="row justify-content-center align-content-center h-100">
               <div className="col-12 col-md-6 col-xs-12">

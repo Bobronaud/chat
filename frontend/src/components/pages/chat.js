@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavbarHeader from '../navbarHeader.js';
@@ -11,13 +11,15 @@ import Modal from '../modals/modal.js';
 import { addMessages } from '../../slices/messagesSlice.js';
 import { addChannels, setActive } from '../../slices/channelsSlice.js';
 import routes from '../../routes.js';
+import { AutorizationContext } from '../../contexts.js';
 
 const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const authApi = useContext(AutorizationContext);
   const { type, channel } = useSelector((state) => state.ui.modal);
   useEffect(() => {
-    const { token } = window.localStorage;
+    const { token } = authApi.getData();
     axios
       .get(routes.getData(), {
         headers: {
@@ -35,11 +37,11 @@ const Chat = () => {
           navigate('/login');
         }
       });
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, authApi]);
   return (
     <div className="h-100">
       <div className="d-flex flex-column h-100">
-        <NavbarHeader auth />
+        <NavbarHeader />
         <div className="container h-100 my-4 overflow-hidden rounded shadow">
           <div className="row h-100 bg-white flex-md-row">
             <ChatAside />

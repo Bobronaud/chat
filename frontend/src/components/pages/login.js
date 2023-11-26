@@ -5,19 +5,21 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as yup from 'yup';
 import NavbarHeader from '../navbarHeader.js';
 import routes from '../../routes.js';
+import { AutorizationContext } from '../../contexts.js';
 
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
+  const authApi = useContext(AutorizationContext);
 
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
@@ -25,8 +27,7 @@ const Login = () => {
       .post(routes.login(), { username, password })
       .then((res) => {
         const { token } = res.data;
-        window.localStorage.setItem('token', token);
-        window.localStorage.setItem('username', username);
+        authApi.login(token, username);
       })
       .then(() => {
         navigate('/');

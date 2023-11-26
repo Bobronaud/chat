@@ -1,17 +1,19 @@
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { clearChannels } from '../slices/channelsSlice.js';
 import { clearMessages } from '../slices/messagesSlice.js';
+import { AutorizationContext } from '../contexts.js';
 
-const NavbarHeader = ({ auth }) => {
+const NavbarHeader = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const authApi = useContext(AutorizationContext);
   const logout = () => {
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('username');
+    authApi.logout();
     dispatch(clearChannels());
     dispatch(clearMessages());
     navigate('/login');
@@ -20,7 +22,7 @@ const NavbarHeader = ({ auth }) => {
     <Navbar className="shadow-sm  bg-white">
       <Container>
         <Navbar.Brand href="/">{t('navbar.brand')}</Navbar.Brand>
-        {auth ? (
+        {authApi.isAutorization() ? (
           <Button variant="primary" onClick={logout}>
             {t('navbar.logout')}
           </Button>
