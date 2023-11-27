@@ -19,7 +19,7 @@ const Chat = () => {
   const authApi = useContext(AutorizationContext);
   const { type, channel } = useSelector((state) => state.ui.modal);
   useEffect(() => {
-    const { token } = authApi.user;
+    const { token } = authApi.authData;
     axios
       .get(routes.getData(), {
         headers: {

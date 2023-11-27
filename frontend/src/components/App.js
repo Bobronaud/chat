@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/login.js';
 import Signup from './pages/signup.js';
@@ -6,29 +6,30 @@ import ChatMain from './pages/chat.js';
 import PageNotFound from './pages/pageNotFound.js';
 import { AutorizationContext } from '../contexts.js';
 
-const autorizationApi = {
-  user: {
+const App = () => {
+  const initialAuthData = {
     token: window.localStorage.getItem('token'),
     username: window.localStorage.getItem('username'),
-  },
-  login(token, username) {
-    window.localStorage.setItem('token', token);
-    window.localStorage.setItem('username', username);
-    this.user.token = token;
-    this.user.username = username;
-  },
-  logout() {
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('username');
-    this.user.token = null;
-    this.user.username = null;
-  },
-  isAutorization() {
-    return Boolean(this.user.token);
-  },
-};
+    isAuthorization: Boolean(window.localStorage.getItem('token')),
+  };
 
-const App = () => (
+  const [authData, setAuthData] = useState(initialAuthData);
+
+  const autorizationApi = {
+    authData,
+    login(token, username) {
+      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('username', username);
+      setAuthData({token, username, isAuthorization: true});
+    },
+    logout() {
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('username');
+      setAuthData({token: null, username: null, isAuthorization: false});
+    },
+  };
+
+  return (
   <AutorizationContext.Provider value={autorizationApi}>
     <BrowserRouter>
       <Routes>
@@ -39,6 +40,7 @@ const App = () => (
       </Routes>
     </BrowserRouter>
   </AutorizationContext.Provider>
-);
+  );
+};
 
 export default App;
