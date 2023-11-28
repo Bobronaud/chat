@@ -16,18 +16,18 @@ const App = () => {
   const [authData, setAuthData] = useState(initialAuthData);
 
   const autorizationApi = useMemo(() => ({
-      authData,
-      login(token, username) {
-        window.localStorage.setItem('token', token);
-        window.localStorage.setItem('username', username);
-        setAuthData({ token, username, isAuthorization: true });
-      },
-      logout() {
-        window.localStorage.removeItem('token');
-        window.localStorage.removeItem('username');
-        setAuthData({ token: null, username: null, isAuthorization: false });
-      },
-    }), [authData]);
+    authData,
+    login(token, username) {
+      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('username', username);
+      setAuthData({ token, username, isAuthorization: true });
+    },
+    logout() {
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('username');
+      setAuthData({ token: null, username: null, isAuthorization: false });
+    },
+  }), [authData]);
 
   return (
     <AutorizationContext.Provider value={autorizationApi}>
