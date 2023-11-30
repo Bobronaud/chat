@@ -26,7 +26,7 @@ const Form = () => {
   const handlerSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    const { username } = authApi.authData;
+    const { username } = authApi.user;
     const data = { body: value, channelId: active, username };
     try {
       await api.newMessage(data);
