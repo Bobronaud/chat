@@ -22,7 +22,7 @@ const NavbarHeader = () => {
     <Navbar className="shadow-sm  bg-white">
       <Container>
         <Navbar.Brand href="/">{t('navbar.brand')}</Navbar.Brand>
-        {authApi.authData.isAuthorization ? (
+        {authApi.user ? (
           <Button variant="primary" onClick={logout}>
             {t('navbar.logout')}
           </Button>
