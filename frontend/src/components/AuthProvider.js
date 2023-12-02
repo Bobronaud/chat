@@ -2,22 +2,17 @@ import { useState, useMemo } from 'react';
 import { AutorizationContext } from '../contexts.js';
 
 const AuthProvider = ({ children }) => {
-  const initialUser = {
-    token: window.localStorage.getItem('token'),
-    username: window.localStorage.getItem('username'),
-  };
-  const [user, setUser] = useState(initialUser.token ? initialUser : null);
+  const initialUser = localStorage.user ? JSON.parse(localStorage.user) : null;
+  const [user, setUser] = useState(initialUser);
   const autorizationApi = useMemo(
     () => ({
       user,
-      login(token, username) {
-        window.localStorage.setItem('token', token);
-        window.localStorage.setItem('username', username);
-        setUser({ token, username });
+      login(data) {
+        localStorage.setItem('user', JSON.stringify(data));
+        setUser(data);
       },
       logout() {
-        window.localStorage.removeItem('token');
-        window.localStorage.removeItem('username');
+        localStorage.clear();
         setUser(null);
       },
     }),

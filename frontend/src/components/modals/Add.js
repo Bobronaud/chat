@@ -1,10 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useState,
-  useContext,
-  useRef,
-  useEffect,
-} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -13,13 +8,13 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setModal } from '../../slices/uiSlice.js';
-import { ApiContext } from '../../contexts.js';
+import { useApi } from '../../contexts.js';
 import { setActive } from '../../slices/channelsSlice.js';
 
 const Add = () => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
-  const api = useContext(ApiContext);
+  const api = useApi();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -59,7 +54,9 @@ const Add = () => {
       <Modal.Body>
         <Form onSubmit={handlerSubmit}>
           <InputGroup hasValidation>
-            <Form.Label visuallyHidden="true">{t('chat.modals.inputLabel')}</Form.Label>
+            <Form.Label visuallyHidden="true">
+              {t('chat.modals.inputLabel')}
+            </Form.Label>
             <Form.Control
               required
               isInvalid={!isValid}
@@ -69,7 +66,9 @@ const Add = () => {
               value={value}
               type="text"
             />
-            <Form.Control.Feedback type="invalid">{t('chat.modals.invalidValue')}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {t('chat.modals.invalidValue')}
+            </Form.Control.Feedback>
           </InputGroup>
 
           <div className="d-flex justify-content-end">

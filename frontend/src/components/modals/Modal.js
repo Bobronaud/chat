@@ -1,4 +1,4 @@
-import Add from './add.js';
+import Add from './Add.js';
 import Rename from './Rename.js';
 import Remove from './Remove.js';
 

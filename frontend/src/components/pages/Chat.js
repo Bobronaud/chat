@@ -1,25 +1,25 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import NavbarHeader from '../navbarHeader.js';
-import ChatAside from '../chatAside/chatAside.js';
-import ChatMain from '../chatMain/chatMain.js';
-import Modal from '../modals/modal.js';
+import NavbarHeader from '../NavbarHeader.js';
+import ChatAside from '../chatAside/ChatAside.js';
+import ChatMain from '../chatMain/ChatMain.js';
+import Modal from '../modals/Modal.js';
 import { addMessages } from '../../slices/messagesSlice.js';
 import { addChannels, setActive } from '../../slices/channelsSlice.js';
 import routes from '../../routes.js';
-import { AutorizationContext } from '../../contexts.js';
+import { useAuth } from '../../contexts.js';
 
 const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authApi = useContext(AutorizationContext);
+  const authorization = useAuth();
   const { type, channel } = useSelector((state) => state.ui.modal);
   useEffect(() => {
-    const token = authApi.user ? authApi.user.token : null;
+    const token = authorization.user ? authorization.user.token : null;
     axios
       .get(routes.getData(), {
         headers: {
@@ -37,7 +37,7 @@ const Chat = () => {
           navigate('/login');
         }
       });
-  }, [dispatch, navigate, authApi]);
+  }, [dispatch, navigate, authorization]);
   return (
     <div className="h-100">
       <div className="d-flex flex-column h-100">

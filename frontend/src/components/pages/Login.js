@@ -5,29 +5,28 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as yup from 'yup';
-import NavbarHeader from '../navbarHeader.js';
+import NavbarHeader from '../NavbarHeader.js';
 import routes from '../../routes.js';
-import { AutorizationContext } from '../../contexts.js';
+import { useAuth } from '../../contexts.js';
 
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
-  const authApi = useContext(AutorizationContext);
+  const authorization = useAuth();
 
   const submitHandle = ({ username, password }) => {
     setDisabled(true);
     axios
       .post(routes.login(), { username, password })
       .then((res) => {
-        const { token } = res.data;
-        authApi.login(token, username);
+        authorization.login(res.data);
       })
       .then(() => {
         navigate('/');
