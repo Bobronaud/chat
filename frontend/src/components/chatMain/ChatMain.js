@@ -1,6 +1,6 @@
-import Header from './header.js';
-import Body from './body.js';
-import Form from './form.js';
+import Header from './Header.js';
+import Body from './Body.js';
+import Form from './Form.js';
 
 const ChatMain = () => (
   <div className="col p-0 h-100">

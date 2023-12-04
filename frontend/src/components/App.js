@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/login.js';
-import Signup from './pages/signup.js';
-import ChatMain from './pages/chat.js';
-import PageNotFound from './pages/pageNotFound.js';
-import AuthProvider from './authProvider.js';
+import Login from './pages/Login.js';
+import Signup from './pages/Signup.js';
+import ChatMain from './pages/Chat.js';
+import PageNotFound from './pages/PageNotFound.js';
+import AuthProvider from './AuthProvider.js';
 
 const App = () => (
   <AuthProvider>

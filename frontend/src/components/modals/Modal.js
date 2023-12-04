@@ -1,6 +1,6 @@
-import Add from './add.js';
-import Rename from './rename.js';
-import Remove from './remove.js';
+import Add from './Add.js';
+import Rename from './Rename.js';
+import Remove from './Remove.js';
 
 const Modal = ({ type, channel }) => {
   switch (type) {

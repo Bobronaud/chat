@@ -5,20 +5,20 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
-import NavbarHeader from '../navbarHeader.js';
+import NavbarHeader from '../NavbarHeader.js';
 import routes from '../../routes.js';
-import { AutorizationContext } from '../../contexts.js';
+import { useAuth } from '../../contexts.js';
 
 const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
-  const authApi = useContext(AutorizationContext);
+  const authorization = useAuth();
 
   yup.setLocale({
     mixed: {
@@ -43,8 +43,7 @@ const Signup = () => {
     axios
       .post(routes.signup(), { username, password })
       .then((res) => {
-        const { token } = res.data;
-        authApi.login(token, username);
+        authorization.login(res.data);
       })
       .then(() => {
         navigate('/');
