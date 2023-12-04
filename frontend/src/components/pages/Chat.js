@@ -19,11 +19,10 @@ const Chat = () => {
   const authorization = useAuth();
   const { type, channel } = useSelector((state) => state.ui.modal);
   useEffect(() => {
-    const token = authorization.user ? authorization.user.token : null;
     axios
       .get(routes.getData(), {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorization.user.token}`,
         },
       })
       .then((response) => {
@@ -31,11 +30,6 @@ const Chat = () => {
         dispatch(addChannels(channels));
         dispatch(setActive(currentChannelId));
         dispatch(addMessages(messages));
-      })
-      .catch((e) => {
-        if (e.response.status === 401) {
-          navigate('/login');
-        }
       });
   }, [dispatch, navigate, authorization]);
   return (

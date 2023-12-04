@@ -2,9 +2,10 @@ import { useState, useMemo } from 'react';
 import { AutorizationContext } from '../contexts.js';
 
 const AuthProvider = ({ children }) => {
-  const initialUser = localStorage.user ? JSON.parse(localStorage.user) : null;
-  const [user, setUser] = useState(initialUser);
-  const autorizationApi = useMemo(
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem('user')),
+  );
+  const autorization = useMemo(
     () => ({
       user,
       login(data) {
@@ -12,14 +13,14 @@ const AuthProvider = ({ children }) => {
         setUser(data);
       },
       logout() {
-        localStorage.clear();
+        localStorage.removeItem('user');
         setUser(null);
       },
     }),
     [user],
   );
   return (
-    <AutorizationContext.Provider value={autorizationApi}>
+    <AutorizationContext.Provider value={autorization}>
       {children}
     </AutorizationContext.Provider>
   );
