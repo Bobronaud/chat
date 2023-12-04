@@ -15,11 +15,11 @@ const App = () => (
         <Route path="signup" element={<Signup />} />
         <Route
           path="/"
-          element={
+          element={(
             <RequireAuth>
               <Chat />
             </RequireAuth>
-          }
+          )}
         />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
