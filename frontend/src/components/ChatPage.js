@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import NavbarHeader from '../NavbarHeader.js';
-import ChatAside from '../chatAside/ChatAside.js';
-import ChatMain from '../chatMain/ChatMain.js';
-import Modal from '../modals/Modal.js';
-import { addMessages } from '../../slices/messagesSlice.js';
-import { addChannels, setActive } from '../../slices/channelsSlice.js';
-import routes from '../../routes.js';
-import { useAuth } from '../../contexts.js';
+import NavbarHeader from './NavbarHeader.js';
+import ChatAside from './ChatAside.js';
+import ChatMain from './ChatMain.js';
+import Modal from './modals/Modal.js';
+import { addMessages } from '../slices/messagesSlice.js';
+import { addChannels, setActive } from '../slices/channelsSlice.js';
+import { apiRoutes } from '../routes.js';
+import { useAuth } from '../contexts.js';
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -20,10 +20,8 @@ const Chat = () => {
   const { type, channel } = useSelector((state) => state.ui.modal);
   useEffect(() => {
     axios
-      .get(routes.getData(), {
-        headers: {
-          Authorization: `Bearer ${authorization.user.token}`,
-        },
+      .get(apiRoutes.getData(), {
+        headers: authorization.getAuthHeader(),
       })
       .then((response) => {
         const { channels, currentChannelId, messages } = response.data;

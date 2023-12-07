@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect, useRef } from 'react';
-import { useApi, useAuth } from '../../contexts.js';
+import { useApi, useAuth } from '../contexts.js';
 
-const Form = () => {
+const ChatMessageForm = () => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
   const api = useApi();
@@ -75,4 +75,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ChatMessageForm;

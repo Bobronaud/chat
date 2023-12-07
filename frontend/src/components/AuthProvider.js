@@ -2,10 +2,15 @@ import { useState, useMemo } from 'react';
 import { AutorizationContext } from '../contexts.js';
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem('user')),
+  );
   const autorization = useMemo(
     () => ({
       user,
+      getAuthHeader: () => ({
+        Authorization: `Bearer ${user.token}`,
+      }),
       login(data) {
         localStorage.setItem('user', JSON.stringify(data));
         setUser(data);

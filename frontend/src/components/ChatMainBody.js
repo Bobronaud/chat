@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useRef, useLayoutEffect } from 'react';
 import filter from 'leo-profanity';
 
-const Body = () => {
+const ChatMainBody = () => {
   const { messages } = useSelector((state) => state.messages);
   const { active } = useSelector((state) => state.channels);
   const messagesBox = useRef(null);
@@ -19,7 +19,11 @@ const Body = () => {
   };
 
   return (
-    <div id="messages-box" ref={messagesBox} className="chat-messages overflow-auto px-5 ">
+    <div
+      id="messages-box"
+      ref={messagesBox}
+      className="chat-messages overflow-auto px-5 "
+    >
       {messages
         .filter(({ channelId }) => channelId === active)
         .map(({ body, id, username }) => (
@@ -33,4 +37,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default ChatMainBody;

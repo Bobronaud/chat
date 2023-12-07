@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-const PageNotFound = () => {
+const NotFoundPage = () => {
   const { t } = useTranslation();
   return (
     <div className="h-100">
@@ -19,4 +19,4 @@ const PageNotFound = () => {
   );
 };
 
-export default PageNotFound;
+export default NotFoundPage;

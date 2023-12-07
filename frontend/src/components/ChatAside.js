@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import CreateChannel from './CreateChannel.js';
-import Channel from './Channel.js';
+import CustomChannel from './CustomChannel.js';
 import DefaultChannel from './DefaultChannel.js';
 
 const ChatAside = () => {
@@ -19,9 +19,13 @@ const ChatAside = () => {
       >
         {channels.map((channel) => {
           if (channel.removable) {
-            return <Channel key={channel.id} info={channel} active={active} />;
+            return (
+              <CustomChannel key={channel.id} info={channel} active={active} />
+            );
           }
-          return <DefaultChannel key={channel.id} info={channel} active={active} />;
+          return (
+            <DefaultChannel key={channel.id} info={channel} active={active} />
+          );
         })}
       </ul>
     </div>

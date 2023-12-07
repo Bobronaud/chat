@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { clearChannels } from '../slices/channelsSlice.js';
 import { clearMessages } from '../slices/messagesSlice.js';
 import { useAuth } from '../contexts.js';
+import { pageRoutes } from '../routes.js';
 
 const NavbarHeader = () => {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ const NavbarHeader = () => {
     authorization.logout();
     dispatch(clearChannels());
     dispatch(clearMessages());
-    navigate('/login');
+    navigate(pageRoutes.login());
   };
   return (
     <Navbar className="shadow-sm  bg-white">

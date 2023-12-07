@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setModal } from '../../slices/uiSlice.js';
+import { setModal } from '../slices/uiSlice.js';
 
 const CreateChannel = () => {
   const dispatch = useDispatch();
