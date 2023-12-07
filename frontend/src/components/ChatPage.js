@@ -2,7 +2,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavbarHeader from './NavbarHeader.js';
 import ChatAside from './ChatAside.js';
@@ -10,10 +12,11 @@ import ChatMain from './ChatMain.js';
 import Modal from './modals/Modal.js';
 import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, setActive } from '../slices/channelsSlice.js';
-import { apiRoutes } from '../routes.js';
+import { apiRoutes, pageRoutes } from '../routes.js';
 import { useAuth } from '../contexts.js';
 
 const Chat = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authorization = useAuth();
@@ -28,8 +31,19 @@ const Chat = () => {
         dispatch(addChannels(channels));
         dispatch(setActive(currentChannelId));
         dispatch(addMessages(messages));
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          authorization.logout();
+          navigate(pageRoutes.login());
+        }
+        if (err.isAxiosError) {
+          toast.error(t('toasts.networkError'));
+        } else {
+          toast.error(t('toasts.unknownError'));
+        }
       });
-  }, [dispatch, navigate, authorization]);
+  }, [dispatch, navigate, authorization, t]);
   return (
     <div className="h-100">
       <div className="d-flex flex-column h-100">
