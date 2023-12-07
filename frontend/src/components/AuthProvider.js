@@ -2,9 +2,7 @@ import { useState, useMemo } from 'react';
 import { AutorizationContext } from '../contexts.js';
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() =>
-    JSON.parse(localStorage.getItem('user')),
-  );
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const autorization = useMemo(
     () => ({
       user,
