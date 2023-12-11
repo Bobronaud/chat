@@ -42,10 +42,8 @@ const ChatMessageForm = () => {
       )}
       <Form onSubmit={handlerSubmit} className="py-1 border rounded-2">
         <InputGroup>
-          <Form.Label htmlFor="body" visuallyHidden="true">
-            {t('chat.inputLabel')}
-          </Form.Label>
           <Form.Control
+            aria-label={t('chat.inputLabel')}
             className="border-0 p-0 ps-2"
             required
             placeholder={t('chat.inputTextPlaceholder')}
