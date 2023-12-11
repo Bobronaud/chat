@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavbarHeader from './NavbarHeader.js';
@@ -44,17 +46,15 @@ const Chat = () => {
       });
   }, [dispatch, navigate, authorization, t]);
   return (
-    <div className="h-100">
-      <div className="d-flex flex-column h-100">
-        <NavbarHeader />
-        <div className="container h-100 my-4 overflow-hidden rounded shadow">
-          <div className="row h-100 bg-white flex-md-row">
-            <ChatAside />
-            <ChatMain />
-            <Modal type={type} channel={channel} />
-          </div>
-        </div>
-      </div>
+    <div className="d-flex flex-column h-100">
+      <NavbarHeader />
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white">
+          <ChatAside />
+          <ChatMain />
+          <Modal type={type} channel={channel} />
+        </Row>
+      </Container>
       <ToastContainer
         position="top-right"
         autoClose={2000}

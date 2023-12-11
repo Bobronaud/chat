@@ -60,6 +60,7 @@ const ru = {
       messagesCounter_few: '{{count}} сообщения',
       messagesCounter_many: '{{count}} сообщений',
       inputTextPlaceholder: 'Введите сообщение...',
+      inputLabel: 'Новое сообщение',
       networkError: 'Ошибка сети. Сообщение не доставлено',
     },
     toasts: {

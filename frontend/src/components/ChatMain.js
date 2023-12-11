@@ -1,15 +1,14 @@
+import Col from 'react-bootstrap/Col';
 import ChatMainHeader from './ChatMainHeader.js';
 import ChatMainBody from './ChatMainBody.js';
 import ChatMessageForm from './ChatMessageForm.js';
 
 const ChatMain = () => (
-  <div className="col p-0 h-100">
-    <div className="d-flex flex-column h-100">
-      <ChatMainHeader />
-      <ChatMainBody />
-      <ChatMessageForm />
-    </div>
-  </div>
+  <Col className="p-0 h-100 d-flex flex-column">
+    <ChatMainHeader />
+    <ChatMainBody />
+    <ChatMessageForm />
+  </Col>
 );
 
 export default ChatMain;

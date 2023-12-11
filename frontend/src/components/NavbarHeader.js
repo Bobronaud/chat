@@ -21,7 +21,9 @@ const NavbarHeader = () => {
   return (
     <Navbar className="shadow-sm  bg-white">
       <Container>
-        <Navbar.Brand href={pageRoutes.chat()}>{t('navbar.brand')}</Navbar.Brand>
+        <Navbar.Brand href={pageRoutes.chat()}>
+          {t('navbar.brand')}
+        </Navbar.Brand>
         {authorization.user ? (
           <Button variant="primary" onClick={logout}>
             {t('navbar.logout')}

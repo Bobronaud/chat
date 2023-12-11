@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
 import CreateChannel from './CreateChannel.js';
 import CustomChannel from './CustomChannel.js';
 import DefaultChannel from './DefaultChannel.js';
@@ -8,14 +10,16 @@ const ChatAside = () => {
   const { t } = useTranslation();
   const { channels, active } = useSelector((state) => state.channels);
   return (
-    <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-      <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+    <Col xs="4" sm="2" className="border-end px-0 bg-light h-100">
+      <div className="d-flex justify-content-between mt-1 mb-2 ps-4 pe-2 p-4">
         <b>{t('chat.channels.header')}</b>
         <CreateChannel />
       </div>
-      <ul
+      <Nav
+        fill
+        variant="pills"
         id="channel-box"
-        className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+        className="px-2 mb-3 overflow-auto h-100 d-block"
       >
         {channels.map((channel) => {
           if (channel.removable) {
@@ -27,8 +31,8 @@ const ChatAside = () => {
             <DefaultChannel key={channel.id} info={channel} active={active} />
           );
         })}
-      </ul>
-    </div>
+      </Nav>
+    </Col>
   );
 };
 
