@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import { Link } from "react-router-dom";
 import NavbarHeader from './NavbarHeader.js';
+import { pageRoutes } from '../routes.js';
 
 const Layout = ({ children, withFooter }) => {
   const { t } = useTranslation();
@@ -20,7 +22,7 @@ const Layout = ({ children, withFooter }) => {
                     <div className="card-footer p-4">
                       <div className="text-center">
                         {t('login.footer.text')}
-                        <a href="/signup">{t('login.footer.link')}</a>
+                        <Link to={pageRoutes.signup()}>{t('login.footer.link')}</Link>
                       </div>
                     </div>
                   )}

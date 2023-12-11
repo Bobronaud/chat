@@ -11,12 +11,6 @@ const ChatMainBody = () => {
       top: messagesBox.current.scrollHeight,
     });
   }, [messages]);
-  const censored = (text) => {
-    filter.loadDictionary('en');
-    const censoredByEn = filter.clean(text);
-    filter.loadDictionary('ru');
-    return filter.clean(censoredByEn);
-  };
 
   return (
     <div
@@ -30,7 +24,7 @@ const ChatMainBody = () => {
           <div key={id} className="text-break mb-2">
             <b>{username}</b>
             {': '}
-            {censored(body)}
+            {filter.clean(body)}
           </div>
         ))}
     </div>

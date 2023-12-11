@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import filter from 'leo-profanity';
 import { io } from 'socket.io-client';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { configureStore } from '@reduxjs/toolkit';
@@ -49,6 +50,13 @@ const init = async () => {
   socket.on('newChannel', (data) => store.dispatch(addChannels(data)));
   socket.on('renameChannel', (data) => store.dispatch(renameChannel(data)));
   socket.on('removeChannel', (data) => store.dispatch(removeChannel(data)));
+
+  const concatDictionaries = (coll) => coll.flatMap((lang) => {
+    filter.loadDictionary(lang);
+    return filter.words;
+  });
+
+  filter.addDictionary('en/ru', concatDictionaries(['en', 'ru']));
 
   const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
