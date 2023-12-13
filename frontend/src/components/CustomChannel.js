@@ -35,17 +35,13 @@ const CustomChannel = ({ info, active }) => {
         </Dropdown.Toggle>
         <Dropdown.Menu className="flex-grow-0">
           <Dropdown.Item
-            onClick={() =>
-              dispatch(modalOpen({ type: 'remove', channel: info }))
-            }
+            onClick={() => dispatch(modalOpen({ type: 'remove', channel: info }))}
             href="#"
           >
             {t('chat.channels.dropdown.remove')}
           </Dropdown.Item>
           <Dropdown.Item
-            onClick={() =>
-              dispatch(modalOpen({ type: 'rename', channel: info }))
-            }
+            onClick={() => dispatch(modalOpen({ type: 'rename', channel: info }))}
             href="#"
           >
             {t('chat.channels.dropdown.rename')}

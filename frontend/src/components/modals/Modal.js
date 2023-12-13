@@ -17,7 +17,7 @@ const Modal = () => {
       return <Remove channel={modal.channel} />;
     }
     default:
-      throw new Error(`"${modal.type}" doesn't exist`);
+      return null;
   }
 };
 

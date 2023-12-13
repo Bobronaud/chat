@@ -11,7 +11,7 @@ const uiSlice = createSlice({
     modalOpen: (state, action) => {
       state.modal = action.payload;
     },
-    modalClose: (state, action) => {
+    modalClose: (state) => {
       state.modal = null;
     },
   },
