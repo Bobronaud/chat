@@ -9,7 +9,7 @@ const CreateChannel = () => {
     <Button
       onClick={() => dispatch(modalOpen({ type: 'add' }))}
       variant="light"
-      className="p-0 text-primary position-relative"
+      className="p-0 text-primary btn-group-vertical"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
