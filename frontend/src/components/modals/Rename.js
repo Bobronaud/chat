@@ -1,12 +1,14 @@
+import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { setModal } from '../../slices/uiSlice.js';
+import { modalClose } from '../../slices/uiSlice.js';
 import { useApi } from '../../contexts.js';
 
 const Rename = ({ channel }) => {
@@ -19,53 +21,60 @@ const Rename = ({ channel }) => {
   const channels = useSelector((state) => state.channels.channels);
   const channelsNames = channels.map(({ name }) => name);
   const dispatch = useDispatch();
-  const [value, setValue] = useState(channel.name);
-  const [isValid, setIsValid] = useState(true);
-  const [isDisabled, setDisabled] = useState(false);
   const closeModal = () => {
-    dispatch(setModal({ type: null }));
+    dispatch(modalClose());
   };
-  const handlerChange = (e) => {
-    setValue(e.target.value);
-  };
-  const handlerSubmit = async (e) => {
-    e.preventDefault();
-    setDisabled(true);
-    setIsValid(!channelsNames.includes(value));
-    if (!channelsNames.includes(value)) {
+
+  const channelSchema = yup.object().shape({
+    channelName: yup
+      .string()
+      .required()
+      .min(3, t('chat.modals.errors.length'))
+      .max(20, t('chat.modals.errors.length'))
+      .notOneOf(channelsNames, t('chat.modals.errors.notUnique')),
+  });
+
+  const handlerSubmit = async ({ channelName }) => {
+    if (!channelsNames.includes(channelName)) {
       try {
-        await api.renameChannel({ id: channel.id, name: value });
+        await api.renameChannel({ id: channel.id, name: channelName });
         closeModal();
         toast.success(t('toasts.channelRename'));
       } catch (err) {
         toast.error(t('toasts.networkError'));
       }
     }
-    setDisabled(false);
   };
+
+  const formik = useFormik({
+    initialValues: { channelName: channel.name },
+    validationSchema: channelSchema,
+    onSubmit: handlerSubmit,
+  });
   return (
     <Modal show onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>{t('chat.modals.headerRename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handlerSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <InputGroup hasValidation>
             <Form.Label htmlFor="channelName" visuallyHidden="true">
               {t('chat.modals.inputLabel')}
             </Form.Label>
             <Form.Control
               required
+              name="channelName"
               id="channelName"
-              isInvalid={!isValid}
+              isInvalid={!!formik.errors.channelName}
               className="mb-2"
               ref={inputRef}
-              onChange={handlerChange}
-              value={value}
+              onChange={formik.handleChange}
+              value={formik.values.channelName}
               type="text"
             />
             <Form.Control.Feedback type="invalid">
-              {t('chat.modals.invalidValue')}
+              {formik.errors.channelName}
             </Form.Control.Feedback>
           </InputGroup>
 
@@ -73,7 +82,11 @@ const Rename = ({ channel }) => {
             <Button className="me-2" variant="secondary" onClick={closeModal}>
               {t('chat.modals.buttonClose')}
             </Button>
-            <Button type="submit" disabled={isDisabled} variant="primary">
+            <Button
+              type="submit"
+              disabled={formik.isSubmitting}
+              variant="primary"
+            >
               {t('chat.modals.buttonSubmit')}
             </Button>
           </div>

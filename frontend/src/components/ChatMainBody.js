@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { useRef, useLayoutEffect } from 'react';
-import filter from 'leo-profanity';
 
 const ChatMainBody = () => {
   const { messages } = useSelector((state) => state.messages);
@@ -24,7 +23,7 @@ const ChatMainBody = () => {
           <div key={id} className="text-break mb-2">
             <b>{username}</b>
             {': '}
-            {filter.clean(body)}
+            {body}
           </div>
         ))}
     </div>

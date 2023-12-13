@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { setActive } from '../slices/channelsSlice.js';
-import { setModal } from '../slices/uiSlice.js';
+import { modalOpen } from '../slices/uiSlice.js';
 
 const CustomChannel = ({ info, active }) => {
   const { t } = useTranslation();
@@ -35,13 +35,17 @@ const CustomChannel = ({ info, active }) => {
         </Dropdown.Toggle>
         <Dropdown.Menu className="flex-grow-0">
           <Dropdown.Item
-            onClick={() => dispatch(setModal({ type: 'remove', channel: info }))}
+            onClick={() =>
+              dispatch(modalOpen({ type: 'remove', channel: info }))
+            }
             href="#"
           >
             {t('chat.channels.dropdown.remove')}
           </Dropdown.Item>
           <Dropdown.Item
-            onClick={() => dispatch(setModal({ type: 'rename', channel: info }))}
+            onClick={() =>
+              dispatch(modalOpen({ type: 'rename', channel: info }))
+            }
             href="#"
           >
             {t('chat.channels.dropdown.rename')}

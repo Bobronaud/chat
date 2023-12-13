@@ -16,7 +16,6 @@ import { useAuth } from '../contexts.js';
 const SignupPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isDisabled, setDisabled] = useState(false);
   const [isUniqueUser, setUniqueUser] = useState(true);
   const authorization = useAuth();
 
@@ -39,7 +38,6 @@ const SignupPage = () => {
       .oneOf([yup.ref('password')]),
   });
   const submitHandle = ({ username, password }) => {
-    setDisabled(true);
     axios
       .post(apiRoutes.signup(), { username, password })
       .then((res) => {
@@ -49,7 +47,6 @@ const SignupPage = () => {
         navigate('/');
       })
       .catch((e) => {
-        setDisabled(false);
         if (e.response.status === 409) {
           setUniqueUser(false);
         }
@@ -132,7 +129,7 @@ const SignupPage = () => {
           type="submit"
           variant="outline-primary"
           className="w-100 mb-3"
-          disabled={isDisabled}
+          disabled={formik.isSubmitting}
         >
           {t('signup.register')}
         </Button>

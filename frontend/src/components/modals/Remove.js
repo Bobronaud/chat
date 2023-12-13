@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { setModal } from '../../slices/uiSlice.js';
+import { modalClose } from '../../slices/uiSlice.js';
 import { setActive } from '../../slices/channelsSlice.js';
 import { useApi } from '../../contexts.js';
 
@@ -13,7 +13,7 @@ const Remove = ({ channel }) => {
   const dispatch = useDispatch();
   const api = useApi();
   const closeModal = () => {
-    dispatch(setModal({ type: null }));
+    dispatch(modalClose());
   };
   const handlerSubmit = async () => {
     setDisabled(true);

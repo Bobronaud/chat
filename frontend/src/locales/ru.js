@@ -46,7 +46,10 @@ const ru = {
         headerRemove: 'Удалить канал?',
         bodyRemove: 'Уверены?',
         inputLabel: 'Имя канала',
-        invalidValue: 'Должно быть уникальным',
+        errors: {
+          notUnique: 'Должно быть уникальным',
+          length: 'От 3 до 20 символов',
+        },
       },
       channels: {
         header: 'Каналы',

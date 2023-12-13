@@ -18,11 +18,9 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
-  const [isDisabled, setDisabled] = useState(false);
   const authorization = useAuth();
 
   const submitHandle = ({ username, password }) => {
-    setDisabled(true);
     axios
       .post(apiRoutes.login(), { username, password })
       .then((res) => {
@@ -37,7 +35,6 @@ const LoginPage = () => {
         } else {
           toast.error(t('toasts.networkError'));
         }
-        setDisabled(false);
       });
   };
 
@@ -101,7 +98,7 @@ const LoginPage = () => {
           type="submit"
           variant="outline-primary"
           className="w-100 mb-3"
-          disabled={isDisabled}
+          disabled={formik.isSubmitting}
         >
           {t('login.login')}
         </Button>

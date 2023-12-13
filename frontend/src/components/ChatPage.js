@@ -1,15 +1,18 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavbarHeader from './NavbarHeader.js';
 import ChatAside from './ChatAside.js';
-import ChatMain from './ChatMain.js';
+import ChatMainHeader from './ChatMainHeader.js';
+import ChatMainBody from './ChatMainBody.js';
+import ChatMessageForm from './ChatMessageForm.js';
 import Modal from './modals/Modal.js';
 import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, setActive } from '../slices/channelsSlice.js';
@@ -21,7 +24,7 @@ const Chat = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authorization = useAuth();
-  const { type, channel } = useSelector((state) => state.ui.modal);
+
   useEffect(() => {
     axios
       .get(apiRoutes.getData(), {
@@ -51,8 +54,12 @@ const Chat = () => {
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white">
           <ChatAside />
-          <ChatMain />
-          <Modal type={type} channel={channel} />
+          <Col className="p-0 h-100 d-flex flex-column">
+            <ChatMainHeader />
+            <ChatMainBody />
+            <ChatMessageForm />
+          </Col>
+          <Modal />
         </Row>
       </Container>
       <ToastContainer

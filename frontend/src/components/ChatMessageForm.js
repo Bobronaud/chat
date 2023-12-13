@@ -1,3 +1,4 @@
+import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect, useRef } from 'react';
@@ -5,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
+import filter from 'leo-profanity';
 import { useApi, useAuth } from '../contexts.js';
 
 const ChatMessageForm = () => {
@@ -15,32 +17,29 @@ const ChatMessageForm = () => {
   useEffect(() => {
     inputRef.current.focus();
   });
-  const [value, setValue] = useState('');
-  const [isDisabled, setDisabled] = useState(false);
   const [isNetworkError, setNetworkError] = useState(false);
   const { active } = useSelector((state) => state.channels);
-  const handlerChange = (e) => {
-    setValue(e.target.value);
-  };
-  const handlerSubmit = async (e) => {
-    e.preventDefault();
-    setDisabled(true);
-    const { username } = authorization.user;
-    const data = { body: value, channelId: active, username };
-    try {
-      await api.newMessage(data);
-      setValue('');
-      setDisabled(false);
-    } catch (err) {
-      setNetworkError(true);
-    }
-  };
+
+  const formik = useFormik({
+    initialValues: { text: '' },
+    onSubmit: async ({ text }) => {
+      const { username } = authorization.user;
+      const data = { body: filter.clean(text), channelId: active, username };
+      try {
+        await api.newMessage(data);
+      } catch (err) {
+        setNetworkError(true);
+      }
+      formik.resetForm();
+    },
+  });
+
   return (
     <div className="mt-auto px-5 py-3">
       {isNetworkError && (
         <Alert variant="danger">{t('chat.networkError')}</Alert>
       )}
-      <Form onSubmit={handlerSubmit} className="py-1 border rounded-2">
+      <Form onSubmit={formik.handleSubmit} className="py-1 border rounded-2">
         <InputGroup>
           <Form.Control
             aria-label={t('chat.inputLabel')}
@@ -48,16 +47,17 @@ const ChatMessageForm = () => {
             required
             placeholder={t('chat.inputTextPlaceholder')}
             id="body"
+            name="text"
             ref={inputRef}
-            onChange={handlerChange}
-            value={value}
+            onChange={formik.handleChange}
+            value={formik.values.text}
             type="text"
           />
           <Button
             type="submit"
-            variant="light"
+            variant="white"
             className="text-primary"
-            disabled={isDisabled}
+            disabled={formik.isSubmitting}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
