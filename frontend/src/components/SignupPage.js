@@ -7,6 +7,7 @@ import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import axios from 'axios';
 import * as yup from 'yup';
 import Layout from './Layout.js';
@@ -15,27 +16,25 @@ import { useAuth } from '../contexts.js';
 
 const SignupPage = () => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const navigate = useNavigate();
   const [isUniqueUser, setUniqueUser] = useState(true);
   const authorization = useAuth();
 
-  yup.setLocale({
-    mixed: {
-      required: t('signup.errors.notEmpty'),
-      oneOf: t('signup.errors.passwordConfirmation'),
-    },
-  });
   const SignupSchema = yup.object().shape({
     username: yup
       .string()
-      .required()
-      .min(3, t('signup.errors.usernameLength'))
-      .max(20, t('signup.errors.usernameLength')),
-    password: yup.string().required().min(6, t('signup.errors.passwordLength')),
+      .required('signup.errors.notEmpty')
+      .min(3, 'signup.errors.usernameLength')
+      .max(20, 'signup.errors.usernameLength'),
+    password: yup
+      .string()
+      .required('signup.errors.notEmpty')
+      .min(6, 'signup.errors.passwordLength'),
     passwordConfirmation: yup
       .string()
-      .required()
-      .oneOf([yup.ref('password')]),
+      .required('signup.errors.notEmpty')
+      .oneOf([yup.ref('password')], 'signup.errors.passwordConfirmation'),
   });
   const submitHandle = ({ username, password }) => {
     axios
@@ -47,6 +46,7 @@ const SignupPage = () => {
         navigate('/');
       })
       .catch((e) => {
+        rollbar.error(e);
         if (e.response.status === 409) {
           setUniqueUser(false);
         }
@@ -63,10 +63,7 @@ const SignupPage = () => {
   });
   return (
     <Layout>
-      <Form
-        onSubmit={formik.handleSubmit}
-        className="col-12 col-md-8 mt-3 mb-0"
-      >
+      <Form onSubmit={formik.handleSubmit} className="col-12 col-md-8 mt-3 mb-0">
         <h1 className="text-center mb-4">{t('signup.registration')}</h1>
         <InputGroup className="mb-4" hasValidation>
           <FloatingLabel controlId="floatingName" label={t('signup.username')}>
@@ -80,15 +77,12 @@ const SignupPage = () => {
             />
 
             <Form.Control.Feedback type="invalid">
-              {formik.errors.username}
+              {t(formik.errors.username)}
             </Form.Control.Feedback>
           </FloatingLabel>
         </InputGroup>
         <InputGroup className="mb-4" hasValidation>
-          <FloatingLabel
-            controlId="floatingPassword"
-            label={t('signup.password')}
-          >
+          <FloatingLabel controlId="floatingPassword" label={t('signup.password')}>
             <Form.Control
               type="password"
               name="password"
@@ -98,7 +92,7 @@ const SignupPage = () => {
               isInvalid={!!formik.errors.password}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.password}
+              {t(formik.errors.password)}
             </Form.Control.Feedback>
           </FloatingLabel>
         </InputGroup>
@@ -116,7 +110,7 @@ const SignupPage = () => {
               isInvalid={!!formik.errors.passwordConfirmation}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.passwordConfirmation}
+              {t(formik.errors.passwordConfirmation)}
             </Form.Control.Feedback>
             {!isUniqueUser && (
               <Alert className="mt-2 mb-0" variant="danger">

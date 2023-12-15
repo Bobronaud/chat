@@ -1,8 +1,10 @@
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useRef } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import { useEffect, useRef } from 'react';
+import { useRollbar } from '@rollbar/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -11,13 +13,13 @@ import { useApi, useAuth } from '../contexts.js';
 
 const ChatMessageForm = () => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const inputRef = useRef(null);
   const api = useApi();
   const authorization = useAuth();
   useEffect(() => {
     inputRef.current.focus();
   });
-  const [isNetworkError, setNetworkError] = useState(false);
   const { active } = useSelector((state) => state.channels);
 
   const formik = useFormik({
@@ -27,18 +29,16 @@ const ChatMessageForm = () => {
       const data = { body: filter.clean(text), channelId: active, username };
       try {
         await api.newMessage(data);
+        formik.resetForm();
       } catch (err) {
-        setNetworkError(true);
+        toast.error(t('toasts.networkError'));
+        rollbar.error(err);
       }
-      formik.resetForm();
     },
   });
 
   return (
     <div className="mt-auto px-5 py-3">
-      {isNetworkError && (
-        <Alert variant="danger">{t('chat.networkError')}</Alert>
-      )}
       <Form onSubmit={formik.handleSubmit} className="py-1 border rounded-2">
         <InputGroup>
           <Form.Control
@@ -74,6 +74,18 @@ const ChatMessageForm = () => {
           </Button>
         </InputGroup>
       </Form>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

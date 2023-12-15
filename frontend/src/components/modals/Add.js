@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -15,6 +16,7 @@ import { setActive } from '../../slices/channelsSlice.js';
 
 const Add = () => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const inputRef = useRef(null);
   const api = useApi();
   useEffect(() => {
@@ -29,21 +31,20 @@ const Add = () => {
   const channelSchema = yup.object().shape({
     channel: yup
       .string()
-      .required()
-      .min(3, t('chat.modals.errors.length'))
-      .max(20, t('chat.modals.errors.length'))
-      .notOneOf(channelsNames, t('chat.modals.errors.notUnique')),
+      .required('chat.modals.errors.notEmpty')
+      .min(3, 'chat.modals.errors.length')
+      .max(20, 'chat.modals.errors.length')
+      .notOneOf(channelsNames, 'chat.modals.errors.notUnique'),
   });
   const handlerSubmit = async ({ channel }) => {
-    if (!channelsNames.includes(channel)) {
-      try {
-        const res = await api.newChannel({ name: channel });
-        dispatch(setActive(res.data.id));
-        closeModal();
-        toast.success(t('toasts.channelAdd'));
-      } catch (err) {
-        toast.error(t('toasts.networkError'));
-      }
+    try {
+      const res = await api.newChannel({ name: channel });
+      dispatch(setActive(res.data.id));
+      closeModal();
+      toast.success(t('toasts.channelAdd'));
+    } catch (err) {
+      toast.error(t('toasts.networkError'));
+      rollbar.error(err);
     }
   };
 
@@ -60,9 +61,7 @@ const Add = () => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <InputGroup hasValidation>
-            <Form.Label visuallyHidden="true">
-              {t('chat.modals.inputLabel')}
-            </Form.Label>
+            <Form.Label visuallyHidden="true">{t('chat.modals.inputLabel')}</Form.Label>
             <Form.Control
               required
               name="channel"
@@ -74,7 +73,7 @@ const Add = () => {
               type="text"
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.channel}
+              {t(formik.errors.channel)}
             </Form.Control.Feedback>
           </InputGroup>
 
@@ -82,11 +81,7 @@ const Add = () => {
             <Button className="me-2" variant="secondary" onClick={closeModal}>
               {t('chat.modals.buttonClose')}
             </Button>
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={formik.isSubmitting}
-            >
+            <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
               {t('chat.modals.buttonSubmit')}
             </Button>
           </div>

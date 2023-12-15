@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -13,6 +14,7 @@ import { useApi } from '../../contexts.js';
 
 const Rename = ({ channel }) => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const inputRef = useRef(null);
   const api = useApi();
   useEffect(() => {
@@ -28,21 +30,20 @@ const Rename = ({ channel }) => {
   const channelSchema = yup.object().shape({
     channelName: yup
       .string()
-      .required()
-      .min(3, t('chat.modals.errors.length'))
-      .max(20, t('chat.modals.errors.length'))
-      .notOneOf(channelsNames, t('chat.modals.errors.notUnique')),
+      .required('chat.modals.errors.notEmpty')
+      .min(3, 'chat.modals.errors.length')
+      .max(20, 'chat.modals.errors.length')
+      .notOneOf(channelsNames, 'chat.modals.errors.notUnique'),
   });
 
   const handlerSubmit = async ({ channelName }) => {
-    if (!channelsNames.includes(channelName)) {
-      try {
-        await api.renameChannel({ id: channel.id, name: channelName });
-        closeModal();
-        toast.success(t('toasts.channelRename'));
-      } catch (err) {
-        toast.error(t('toasts.networkError'));
-      }
+    try {
+      await api.renameChannel({ id: channel.id, name: channelName });
+      closeModal();
+      toast.success(t('toasts.channelRename'));
+    } catch (err) {
+      toast.error(t('toasts.networkError'));
+      rollbar.error(err);
     }
   };
 
@@ -74,7 +75,7 @@ const Rename = ({ channel }) => {
               type="text"
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.channelName}
+              {t(formik.errors.channelName)}
             </Form.Control.Feedback>
           </InputGroup>
 
@@ -82,11 +83,7 @@ const Rename = ({ channel }) => {
             <Button className="me-2" variant="secondary" onClick={closeModal}>
               {t('chat.modals.buttonClose')}
             </Button>
-            <Button
-              type="submit"
-              disabled={formik.isSubmitting}
-              variant="primary"
-            >
+            <Button type="submit" disabled={formik.isSubmitting} variant="primary">
               {t('chat.modals.buttonSubmit')}
             </Button>
           </div>

@@ -49,6 +49,7 @@ const ru = {
         errors: {
           notUnique: 'Должно быть уникальным',
           length: 'От 3 до 20 символов',
+          notEmpty: 'Обязательное поле',
         },
       },
       channels: {

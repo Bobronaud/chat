@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { modalClose } from '../../slices/uiSlice.js';
@@ -9,6 +10,7 @@ import { useApi } from '../../contexts.js';
 
 const Remove = ({ channel }) => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const [isDisabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
   const api = useApi();
@@ -24,7 +26,9 @@ const Remove = ({ channel }) => {
       dispatch(setActive(null));
     } catch (err) {
       toast.error(t('toasts.networkError'));
+      rollbar.error(err);
     }
+    setDisabled(false);
   };
   return (
     <Modal show onHide={closeModal}>
@@ -37,11 +41,7 @@ const Remove = ({ channel }) => {
           <Button className="me-2" variant="secondary" onClick={closeModal}>
             {t('chat.modals.buttonClose')}
           </Button>
-          <Button
-            disabled={isDisabled}
-            variant="danger"
-            onClick={handlerSubmit}
-          >
+          <Button disabled={isDisabled} variant="danger" onClick={handlerSubmit}>
             {t('chat.modals.buttonRemove')}
           </Button>
         </div>

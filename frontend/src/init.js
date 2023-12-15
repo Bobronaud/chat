@@ -16,6 +16,7 @@ import channelsReducer, {
 import uiReducer from './slices/uiSlice.js';
 import messagesReducer, { addMessages } from './slices/messagesSlice.js';
 import { ApiContext } from './contexts.js';
+import AuthProvider from './components/AuthProvider.js';
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -51,10 +52,11 @@ const init = async () => {
   socket.on('renameChannel', (data) => store.dispatch(renameChannel(data)));
   socket.on('removeChannel', (data) => store.dispatch(removeChannel(data)));
 
-  const concatDictionaries = (coll) => coll.flatMap((lang) => {
-    filter.loadDictionary(lang);
-    return filter.words;
-  });
+  const concatDictionaries = (coll) =>
+    coll.flatMap((lang) => {
+      filter.loadDictionary(lang);
+      return filter.words;
+    });
 
   filter.addDictionary('en/ru', concatDictionaries(['en', 'ru']));
 
@@ -69,7 +71,9 @@ const init = async () => {
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
             <ApiContext.Provider value={api}>
-              <App />
+              <AuthProvider>
+                <App />
+              </AuthProvider>
             </ApiContext.Provider>
           </Provider>
         </I18nextProvider>

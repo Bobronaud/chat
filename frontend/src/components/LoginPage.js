@@ -7,6 +7,7 @@ import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as yup from 'yup';
@@ -16,6 +17,7 @@ import { useAuth } from '../contexts.js';
 
 const LoginPage = () => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   const navigate = useNavigate();
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const authorization = useAuth();
@@ -25,11 +27,10 @@ const LoginPage = () => {
       .post(apiRoutes.login(), { username, password })
       .then((res) => {
         authorization.login(res.data);
-      })
-      .then(() => {
         navigate('/');
       })
       .catch((e) => {
+        rollbar.error(e);
         if (e.response.status === 401) {
           setErrorAutorizate(true);
         } else {
@@ -39,8 +40,8 @@ const LoginPage = () => {
   };
 
   const LoginSchema = yup.object().shape({
-    username: yup.string().required(t('login.errors.notEmpty')),
-    password: yup.string().required(t('login.errors.notEmpty')),
+    username: yup.string().required('login.errors.notEmpty'),
+    password: yup.string().required('login.errors.notEmpty'),
   });
 
   const formik = useFormik({
@@ -51,10 +52,7 @@ const LoginPage = () => {
 
   return (
     <Layout withFooter>
-      <Form
-        onSubmit={formik.handleSubmit}
-        className="col-12 col-md-8 mt-3 mt-mb-0"
-      >
+      <Form onSubmit={formik.handleSubmit} className="col-12 col-md-8 mt-3 mt-mb-0">
         <h1 className="text-center mb-4">{t('login.login')}</h1>
         <InputGroup className="mb-3" hasValidation>
           <FloatingLabel controlId="floatingName" label={t('login.username')}>
@@ -67,15 +65,12 @@ const LoginPage = () => {
               isInvalid={!!formik.errors.username || isErrorAutorizate}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.username}
+              {t(formik.errors.username)}
             </Form.Control.Feedback>
           </FloatingLabel>
         </InputGroup>
         <InputGroup className="mb-4" hasValidation>
-          <FloatingLabel
-            controlId="floatingPassword"
-            label={t('login.password')}
-          >
+          <FloatingLabel controlId="floatingPassword" label={t('login.password')}>
             <Form.Control
               type="password"
               placeholder={t('login.password')}
@@ -85,7 +80,7 @@ const LoginPage = () => {
               isInvalid={!!formik.errors.password || isErrorAutorizate}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.password}
+              {t(formik.errors.password)}
             </Form.Control.Feedback>
             {isErrorAutorizate && (
               <Alert className="mt-2 mb-0" variant="danger">

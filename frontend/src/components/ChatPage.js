@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -16,12 +16,12 @@ import ChatMessageForm from './ChatMessageForm.js';
 import Modal from './modals/Modal.js';
 import { addMessages } from '../slices/messagesSlice.js';
 import { addChannels, setActive } from '../slices/channelsSlice.js';
-import { apiRoutes, pageRoutes } from '../routes.js';
+import { apiRoutes } from '../routes.js';
 import { useAuth } from '../contexts.js';
 
 const Chat = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const rollbar = useRollbar();
   const dispatch = useDispatch();
   const authorization = useAuth();
 
@@ -37,9 +37,9 @@ const Chat = () => {
         dispatch(addMessages(messages));
       })
       .catch((err) => {
+        rollbar.error(err);
         if (err.response.status === 401) {
           authorization.logout();
-          navigate(pageRoutes.login());
         }
         if (err.isAxiosError) {
           toast.error(t('toasts.networkError'));
@@ -47,7 +47,7 @@ const Chat = () => {
           toast.error(t('toasts.unknownError'));
         }
       });
-  }, [dispatch, navigate, authorization, t]);
+  }, [dispatch, authorization, t, rollbar]);
   return (
     <div className="d-flex flex-column h-100">
       <NavbarHeader />
