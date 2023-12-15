@@ -52,8 +52,7 @@ const init = async () => {
   socket.on('renameChannel', (data) => store.dispatch(renameChannel(data)));
   socket.on('removeChannel', (data) => store.dispatch(removeChannel(data)));
 
-  const concatDictionaries = (coll) =>
-    coll.flatMap((lang) => {
+  const concatDictionaries = (coll) => coll.flatMap((lang) => {
       filter.loadDictionary(lang);
       return filter.words;
     });

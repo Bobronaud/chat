@@ -14,11 +14,11 @@ const App = () => (
       <Route path={pageRoutes.signup()} element={<SignupPage />} />
       <Route
         path={pageRoutes.chat()}
-        element={
+        element={(
           <RequireAuth>
             <Chat />
           </RequireAuth>
-        }
+        )}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
