@@ -53,9 +53,9 @@ const init = async () => {
   socket.on('removeChannel', (data) => store.dispatch(removeChannel(data)));
 
   const concatDictionaries = (coll) => coll.flatMap((lang) => {
-      filter.loadDictionary(lang);
-      return filter.words;
-    });
+    filter.loadDictionary(lang);
+    return filter.words;
+  });
 
   filter.addDictionary('en/ru', concatDictionaries(['en', 'ru']));
 
