@@ -6,7 +6,7 @@ import { useRollbar } from '@rollbar/react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavbarHeader from './NavbarHeader.js';
 import ChatAside from './ChatAside.js';
@@ -38,13 +38,12 @@ const Chat = () => {
       })
       .catch((err) => {
         rollbar.error(err);
-        if (err.response.status === 401) {
-          authorization.logout();
-        }
-        if (err.isAxiosError) {
-          toast.error(t('toasts.networkError'));
-        } else {
+        if (!err.isAxiosError) {
           toast.error(t('toasts.unknownError'));
+        } else if (err.response.status === 401) {
+          authorization.logout();
+        } else {
+          toast.error(t('toasts.networkError'));
         }
       });
   }, [dispatch, authorization, t, rollbar]);
@@ -62,18 +61,6 @@ const Chat = () => {
           <Modal />
         </Row>
       </Container>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 };

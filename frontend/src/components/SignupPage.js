@@ -8,10 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import * as yup from 'yup';
 import Layout from './Layout.js';
-import { apiRoutes } from '../routes.js';
+import { apiRoutes, pageRoutes } from '../routes.js';
 import { useAuth } from '../contexts.js';
 
 const SignupPage = () => {
@@ -36,19 +38,21 @@ const SignupPage = () => {
       .required('signup.errors.notEmpty')
       .oneOf([yup.ref('password')], 'signup.errors.passwordConfirmation'),
   });
-  const submitHandle = ({ username, password }) => {
+  const submitHandle = async ({ username, password }) => {
     axios
       .post(apiRoutes.signup(), { username, password })
       .then((res) => {
         authorization.login(res.data);
+        navigate(pageRoutes.chat());
       })
-      .then(() => {
-        navigate('/');
-      })
-      .catch((e) => {
-        rollbar.error(e);
-        if (e.response.status === 409) {
+      .catch((err) => {
+        rollbar.error(err);
+        if (!err.isAxiosError) {
+          toast.error(t('toasts.unknownError'));
+        } else if (err.response.status === 409) {
           setUniqueUser(false);
+        } else {
+          toast.error(t('toasts.networkError'));
         }
       });
   };

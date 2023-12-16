@@ -9,10 +9,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import * as yup from 'yup';
 import Layout from './Layout.js';
-import { apiRoutes } from '../routes.js';
+import { apiRoutes, pageRoutes } from '../routes.js';
 import { useAuth } from '../contexts.js';
 
 const LoginPage = () => {
@@ -22,16 +23,18 @@ const LoginPage = () => {
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const authorization = useAuth();
 
-  const submitHandle = ({ username, password }) => {
+  const submitHandle = async ({ username, password }) => {
     axios
       .post(apiRoutes.login(), { username, password })
       .then((res) => {
         authorization.login(res.data);
-        navigate('/');
+        navigate(pageRoutes.chat());
       })
-      .catch((e) => {
-        rollbar.error(e);
-        if (e.response.status === 401) {
+      .catch((err) => {
+        rollbar.error(err);
+        if (!err.isAxiosError) {
+          toast.error(t('toasts.unknownError'));
+        } else if (err.response.status === 401) {
           setErrorAutorizate(true);
         } else {
           toast.error(t('toasts.networkError'));
