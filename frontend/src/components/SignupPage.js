@@ -51,7 +51,7 @@ const SignupPage = () => {
       } else if (err.response.status === 409) {
         setUniqueUser(false);
       } else {
-      toast.error(t('toasts.networkError'));
+        toast.error(t('toasts.networkError'));
       }
     });
   const formik = useFormik({
