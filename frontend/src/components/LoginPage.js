@@ -23,25 +23,22 @@ const LoginPage = () => {
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const authorization = useAuth();
 
-  const submitHandle = ({ username, password }) => {
-    return axios
-      .post(apiRoutes.login(), { username, password })
-      .then((res) => {
-        authorization.login(res.data);
-        navigate(pageRoutes.chat());
-      })
-      .catch((err) => {
-        rollbar.error(err);
-        if (!err.isAxiosError) {
-          toast.error(t('toasts.unknownError'));
-        } else if (err.response.status === 401) {
-          setErrorAutorizate(true);
-        } else {
-          toast.error(t('toasts.networkError'));
-        }
-      });
-  };
-
+  const submitHandle = ({ username, password }) => axios
+    .post(apiRoutes.login(), { username, password })
+    .then((res) => {
+      authorization.login(res.data);
+      navigate(pageRoutes.chat());
+    })
+    .catch((err) => {
+      rollbar.error(err);
+      if (!err.isAxiosError) {
+        toast.error(t('toasts.unknownError'));
+      } else if (err.response.status === 401) {
+        setErrorAutorizate(true);
+      } else {
+        toast.error(t('toasts.networkError'));
+      }
+    });
   const LoginSchema = yup.object().shape({
     username: yup.string().required('login.errors.notEmpty'),
     password: yup.string().required('login.errors.notEmpty'),
@@ -65,9 +62,7 @@ const LoginPage = () => {
               name="username"
               value={formik.values.username}
               onChange={formik.handleChange}
-              isInvalid={
-                (formik.errors.username && formik.touched.username) || isErrorAutorizate
-              }
+              isInvalid={(formik.errors.username && formik.touched.username) || isErrorAutorizate}
             />
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.username)}
@@ -82,9 +77,7 @@ const LoginPage = () => {
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
-              isInvalid={
-                (formik.errors.password && formik.touched.password) || isErrorAutorizate
-              }
+              isInvalid={(formik.errors.password && formik.touched.password) || isErrorAutorizate}
             />
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.password)}
