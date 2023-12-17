@@ -23,8 +23,8 @@ const LoginPage = () => {
   const [isErrorAutorizate, setErrorAutorizate] = useState(false);
   const authorization = useAuth();
 
-  const submitHandle = async ({ username, password }) => {
-    axios
+  const submitHandle = ({ username, password }) => {
+    return axios
       .post(apiRoutes.login(), { username, password })
       .then((res) => {
         authorization.login(res.data);
@@ -65,7 +65,9 @@ const LoginPage = () => {
               name="username"
               value={formik.values.username}
               onChange={formik.handleChange}
-              isInvalid={!!formik.errors.username || isErrorAutorizate}
+              isInvalid={
+                (formik.errors.username && formik.touched.username) || isErrorAutorizate
+              }
             />
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.username)}
@@ -80,7 +82,9 @@ const LoginPage = () => {
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
-              isInvalid={!!formik.errors.password || isErrorAutorizate}
+              isInvalid={
+                (formik.errors.password && formik.touched.password) || isErrorAutorizate
+              }
             />
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.password)}

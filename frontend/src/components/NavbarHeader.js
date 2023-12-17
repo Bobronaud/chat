@@ -1,4 +1,5 @@
 import { Navbar, Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { clearChannels } from '../slices/channelsSlice.js';
@@ -18,7 +19,9 @@ const NavbarHeader = () => {
   return (
     <Navbar className="shadow-sm  bg-white">
       <Container>
-        <Navbar.Brand href={pageRoutes.chat()}>{t('navbar.brand')}</Navbar.Brand>
+        <Navbar.Brand as={Link} to={pageRoutes.chat()}>
+          {t('navbar.brand')}
+        </Navbar.Brand>
         {authorization.user ? (
           <Button variant="primary" onClick={logout}>
             {t('navbar.logout')}

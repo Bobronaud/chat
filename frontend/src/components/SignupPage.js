@@ -38,8 +38,8 @@ const SignupPage = () => {
       .required('signup.errors.notEmpty')
       .oneOf([yup.ref('password')], 'signup.errors.passwordConfirmation'),
   });
-  const submitHandle = async ({ username, password }) => {
-    axios
+  const submitHandle = ({ username, password }) => {
+    return axios
       .post(apiRoutes.signup(), { username, password })
       .then((res) => {
         authorization.login(res.data);
@@ -77,9 +77,8 @@ const SignupPage = () => {
               name="username"
               value={formik.values.username}
               onChange={formik.handleChange}
-              isInvalid={!!formik.errors.username}
+              isInvalid={formik.errors.username && formik.touched.username}
             />
-
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.username)}
             </Form.Control.Feedback>
@@ -93,7 +92,7 @@ const SignupPage = () => {
               placeholder={t('signup.password')}
               value={formik.values.password}
               onChange={formik.handleChange}
-              isInvalid={!!formik.errors.password}
+              isInvalid={formik.errors.password && formik.touched.password}
             />
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.password)}
@@ -111,7 +110,9 @@ const SignupPage = () => {
               placeholder={t('signup.passwordConfirmation')}
               value={formik.values.passwordConfirmation}
               onChange={formik.handleChange}
-              isInvalid={!!formik.errors.passwordConfirmation}
+              isInvalid={
+                formik.errors.passwordConfirmation && formik.touched.passwordConfirmation
+              }
             />
             <Form.Control.Feedback type="invalid">
               {t(formik.errors.passwordConfirmation)}
