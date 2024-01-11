@@ -65,7 +65,7 @@ const Add = () => {
             <Form.Control
               required
               name="channel"
-              isInvalid={!!formik.errors.channel}
+              isInvalid={formik.errors.channel && formik.touched.channel}
               className="mb-2"
               ref={inputRef}
               onChange={formik.handleChange}

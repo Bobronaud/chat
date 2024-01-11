@@ -67,7 +67,7 @@ const Rename = ({ channel }) => {
               required
               name="channelName"
               id="channelName"
-              isInvalid={!!formik.errors.channelName}
+              isInvalid={formik.errors.channelName && formik.touched.channelName}
               className="mb-2"
               ref={inputRef}
               onChange={formik.handleChange}
