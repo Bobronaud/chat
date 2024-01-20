@@ -6,6 +6,7 @@ import { clearChannels } from '../slices/channelsSlice.js';
 import { clearMessages } from '../slices/messagesSlice.js';
 import { useAuth } from '../contexts.js';
 import { pageRoutes } from '../routes.js';
+import logo from '../assets/images/logo.svg';
 
 const NavbarHeader = () => {
   const { t } = useTranslation();
@@ -20,6 +21,13 @@ const NavbarHeader = () => {
     <Navbar className="shadow-sm  bg-white">
       <Container>
         <Navbar.Brand as={Link} to={pageRoutes.chat()}>
+          <img
+            alt=""
+            src={logo}
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+          />{' '}
           {t('navbar.brand')}
         </Navbar.Brand>
         {authorization.user ? (

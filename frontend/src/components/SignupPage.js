@@ -38,22 +38,23 @@ const SignupPage = () => {
       .required('signup.errors.notEmpty')
       .oneOf([yup.ref('password')], 'signup.errors.passwordConfirmation'),
   });
-  const submitHandle = ({ username, password }) => axios
-    .post(apiRoutes.signup(), { username, password })
-    .then((res) => {
-      authorization.login(res.data);
-      navigate(pageRoutes.chat());
-    })
-    .catch((err) => {
-      rollbar.error(err);
-      if (!err.isAxiosError) {
-        toast.error(t('toasts.unknownError'));
-      } else if (err.response.status === 409) {
-        setUniqueUser(false);
-      } else {
-        toast.error(t('toasts.networkError'));
-      }
-    });
+  const submitHandle = ({ username, password }) =>
+    axios
+      .post(apiRoutes.signup(), { username, password })
+      .then((res) => {
+        authorization.login(res.data);
+        navigate(pageRoutes.chat());
+      })
+      .catch((err) => {
+        rollbar.error(err);
+        if (!err.isAxiosError) {
+          toast.error(t('toasts.unknownError'));
+        } else if (err.response.status === 409) {
+          setUniqueUser(false);
+        } else {
+          toast.error(t('toasts.networkError'));
+        }
+      });
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -64,7 +65,7 @@ const SignupPage = () => {
     onSubmit: submitHandle,
   });
   return (
-    <Layout>
+    <Layout withFooter>
       <Form onSubmit={formik.handleSubmit} className="col-12 col-md-8 mt-3 mb-0">
         <h1 className="text-center mb-4">{t('signup.registration')}</h1>
         <InputGroup className="mb-4" hasValidation>

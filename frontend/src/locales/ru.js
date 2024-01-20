@@ -1,7 +1,7 @@
 const ru = {
   translation: {
     navbar: {
-      brand: 'Hexlet Chat',
+      brand: 'Chat',
       logout: 'Выйти',
     },
     signup: {
@@ -10,6 +10,10 @@ const ru = {
       password: 'Пароль',
       passwordConfirmation: 'Подтвердите пароль',
       register: 'Зарегистрироваться',
+      footer: {
+        text: 'Есть аккаунт? ',
+        link: 'Войти',
+      },
       errors: {
         userAlreadyExist: 'Такой пользователь уже существует',
         notEmpty: 'Обязательное поле',
