@@ -11,4 +11,4 @@ Simple chat on websockets. Has 2 default channels, also let users add new channe
 
 **Launch page and start develop IRL**: make start
 
-**Build project for production**: npm build
+**Build project for production**: npm run build
