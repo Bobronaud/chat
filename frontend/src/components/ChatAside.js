@@ -23,13 +23,9 @@ const ChatAside = () => {
       >
         {channels.map((channel) => {
           if (channel.removable) {
-            return (
-              <CustomChannel key={channel.id} info={channel} active={active} />
-            );
+            return <CustomChannel key={channel.id} info={channel} active={active} />;
           }
-          return (
-            <DefaultChannel key={channel.id} info={channel} active={active} />
-          );
+          return <DefaultChannel key={channel.id} info={channel} active={active} />;
         })}
       </Nav>
     </Col>
