@@ -66,7 +66,7 @@ const Chat = () => {
           <Col className="p-0 h-100 d-flex flex-column">
             <ChatMainHeader isMobile>
               <Button
-                style={{ 'border-radius': 0 }}
+                style={{ borderRadius: 0 }}
                 onClick={toggleAside}
                 variant="primary"
                 className="px-1"

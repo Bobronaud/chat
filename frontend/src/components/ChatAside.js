@@ -11,7 +11,7 @@ const ChatAside = () => {
   const { channels, active } = useSelector((state) => state.channels);
   return (
     <Col xs="4" sm="2" className="border-end px-0 bg-light h-100">
-      <div className="d-flex justify-content-between mt-1 mb-2 ps-4 pe-2 p-4">
+      <div className="d-flex justify-content-between mt-1 mb-2 ps-4 pe-2 p-3">
         <b>{t('chat.channels.header')}</b>
         <CreateChannel />
       </div>
